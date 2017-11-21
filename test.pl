@@ -10,16 +10,24 @@ use Data::Dumper;
 print "Content-Type: text/html\n\n";
 
 my $cgi = CGI->new();
-my @val = $cgi->param();
 
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'root', 'zM0dem');
-my $statement = 'INSERT INTO members (id, username, password, gender, date_of_membership, is_admin)'
-  . ' VALUES(?, ?, ?, ?, ?, ?)';
+my $statement = 'INSERT INTO members (
+    username, password, gender, date_of_membership, is_admin, motto
+  ) VALUES(?, ?, ?, ?, ?, ?)';
 my $sth = $dbh->prepare($statement);
-my @paramKeys = qw (id username password gender date_of_membership is_admin);
+my @paramKeys = qw (username password gender date_of_membership is_admin motto);
 my @bindValues = map {
-  $cgi->param($_) || '0';
+  my $ret;
+  if ($_ eq 'is_admin') {
+    $ret = $cgi->param($_) eq 'on' ? 1 : 0
+  } elsif($_ eq 'motto') {
+    $ret = $cgi->param($_) || '';
+  } else {
+    $ret = $cgi->param($_);
+  }
+  $ret;
 } @paramKeys;
-print join(',', @bindValues);
+print join("<br />\n", @bindValues);
 $sth->execute(@bindValues);
