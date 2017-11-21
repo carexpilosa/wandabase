@@ -4,3 +4,7 @@ CREATE TABLE members (
 );
 
 INSERT INTO members (id, username) VALUES (1, 'horst');
+
+create USER 'markus'@'localhost' IDENTIFIED BY 'markus';
+GRANT ALL PRIVILEGES ON meineDB . * TO 'markus'@'localhost';
+
