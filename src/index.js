@@ -11,10 +11,9 @@ const history = createHistory();
 ReactDOM.render(
   <Router history={history}>
     <div>
-      <Redirect from="/" to="/ca" />
-      <Route path="/test" component={Test} />
+      <Route path="/" component={Menu} />
       <Route path="/ca" component={CreateAccount} />
-      <Route path="/menu" component={Menu} />
+      <Route path="/test" component={Test} />
     </div>
   </Router>,
   document.getElementById('app')

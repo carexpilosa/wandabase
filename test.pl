@@ -6,7 +6,7 @@ use CGI;
 use DBI;
 use DBD::mysql;
 use Data::Dumper;
-use POSIX qw/strftime/;
+use POSIX qw(strftime);
 
 print "Content-Type: text/html\n\n";
 
