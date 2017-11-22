@@ -8,14 +8,16 @@ export default class Menu extends React.Component {
   render() {
     return (
       <table>
-        <tr>
-          <td width="100">
-            <Link to="/ca">new user</Link>
+        <tbody>
+          <tr>
+            <td width="100">
+              <Link to="/ca">new user</Link>
+              </td>
+            <td width="100">
+              <Link to="/test">test</Link>
             </td>
-          <td width="100">
-            <Link to="/test">test</Link>
-          </td>
-        </tr>
+          </tr>
+        </tbody>
       </table>
     );
   }
