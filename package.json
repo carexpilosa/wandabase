@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "webpack": "^3.8.1"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --hot --config webpack.config.dev.js",
+    "build": "webpack"
+  }
+}
