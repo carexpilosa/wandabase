@@ -7,8 +7,8 @@ export default class CreateAccount extends React.Component {
   render() {
     return (
       <div>
-        Neuer Account ...
-        <form action="./test.pl" method="post">
+        Neuer Account
+        <form action="http://localhost/wanda/test.pl" method="post">
           <label htmlFor="username">Username: </label>
           <input name="username" type="text" />
           <br />
@@ -20,9 +20,6 @@ export default class CreateAccount extends React.Component {
             <option>m</option>
             <option>w</option>
           </select>
-          <br />
-          <label htmlFor="date_of_membership">Datum</label>
-          <input type="text" name="date_of_membership" />
           <br />
           <label htmlFor="isadmin">Is Admin</label>
           <input type="checkbox" name="is_admin" />

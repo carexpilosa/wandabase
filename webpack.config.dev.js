@@ -5,7 +5,7 @@ module.exports = {
   devServer: {
     port: 3001,
     historyApiFallback: {
-      index: '/dist/'
+      index: '/'
     },
     headers: { "Access-Control-Allow-Origin": "*" },
     open: true,
@@ -13,12 +13,12 @@ module.exports = {
   },
   entry: {
     src: [
-      "./src/index"
+      "./src/index.js"
     ]
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    path: path.resolve(__dirname, "/dist"),
+    publicPath: "/dist",
     filename: "bundle.js"
   },
   devtool: 'cheap-module-eval-source-map',

@@ -6,6 +6,7 @@ use CGI;
 use DBI;
 use DBD::mysql;
 use Data::Dumper;
+use POSIX qw/strftime/;
 
 print "Content-Type: text/html\n\n";
 
@@ -21,9 +22,11 @@ my @paramKeys = qw (username password gender date_of_membership is_admin motto);
 my @bindValues = map {
   my $ret;
   if ($_ eq 'is_admin') {
-    $ret = $cgi->param($_) eq 'on' ? 1 : 0
+    $ret = $cgi->param($_) && $cgi->param($_) eq 'on' ? 1 : 0;
   } elsif($_ eq 'motto') {
     $ret = $cgi->param($_) || '';
+  } elsif($_ eq 'date_of_membership') {
+    $ret = strftime('%Y-%m-%d', localtime);
   } else {
     $ret = $cgi->param($_);
   }
