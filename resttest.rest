@@ -3,8 +3,11 @@ POST http://localhost/wanda/srvrest.pl HTTP/1.1
 content-type: application/json
 
 {
-  "Hase": "Fritz",
-  "Esel": "Manfred"
+  "username": "Fritz",
+  "password": "Manfred",
+  "gender": "f",
+  "is_admin": "on",
+  "motto": "Hol raus, was rauszuholen geht"
 }
 ###
 

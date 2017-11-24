@@ -58,9 +58,25 @@ if( $request_method eq 'GET' ) {
 } elsif ( $request_method eq 'POST' ) { # ----- Daten schreiben
     my $data = from_json( $page->param( 'POSTDATA' ) );
     $rest_data .= Data::Dumper::Dumper $data;
-    #map {
-    #  $rest_data .= $data->{$_} . "<br />\n";
-    #} keys %$data;
+
+
+    my @bindValues;
+    map {
+      #$rest_data .= $data->{$_} . "<br />\n";
+      $rest_data .= "KEY => $_<br/>\n";
+      my $ret;
+      if ($_ eq 'is_admin') {
+        $ret = $data->{$_} && $data->{$_} eq 'on' ? 1 : 0;
+      } elsif($_ eq 'motto') {
+        $ret = $data->{$_} || '';
+      } elsif($_ eq 'date_of_membership') {
+        $ret = strftime('%Y-%m-%d', localtime);
+      } else {
+        $ret = $data->{$_};
+      }
+      push @bindValues, $ret;
+    } keys %$data;
+    $rest_data .= Data::Dumper::Dumper \@bindValues;
     # Daten in den DB_File Hash schreiben
     #$data{ $book->{id} } = "$book->{title};$book->{author}";
     $rest_data =  $page->header('text/html') . "OK\n" . $rest_data;
