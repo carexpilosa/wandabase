@@ -11,7 +11,7 @@ const history = createHistory();
 ReactDOM.render(
   <Router history={history}>
     <div>
-      <Route path="/" component={Menu} />
+      <Menu />
       <Route path="/ca" component={CreateAccount} />
       <Route path="/test" component={Test} />
     </div>
