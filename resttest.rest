@@ -1,3 +1,17 @@
+
+POST http://localhost/wanda/srvrest.pl HTTP/1.1
+content-type: application/json
+
+{
+  "Hase": "Fritz",
+  "Esel": "Manfred"
+}
+###
+
+GET http://localhost/wanda/srvrest.pl HTTP/1.1
+
+###
+
 GET https://example.com/comments/1 HTTP/1.1
 
 ###
@@ -42,11 +56,19 @@ POST http://localhost/wanda/rest.pl/bookdb/33  HTTP/1.1
 Content-Type: application/json
 
 {
-  "id":"5555",
-  "title" : "REST und Perl",
-  "author" : "A. Parker"
+  "id":"5557",
+  "title" : "Strategy",
+  "author" : "J. R. Capablanca"
 }
 
 ###
-GET http://localhost/wanda/rest.pl/bookdb/5555  HTTP/1.1
+GET http://localhost/wanda/rest.pl/bookdb/123  HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http://localhost/wanda/rest.pl/bookdb/123  HTTP/1.1
+Content-Type: application/json
+
+###
+DELETE http://localhost/wanda/rest.pl/bookdb/123  HTTP/1.1
 Content-Type: application/json
