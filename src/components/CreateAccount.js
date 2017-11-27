@@ -2,14 +2,15 @@ import React from 'react';
 export default class CreateAccount extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      jsonResponse: '+++'
+    }
   }
 
   render() {
-    if (this.state.json) {
-      console.log(
-        '=> ' + this.state.json.stringify()
-      );
-    }
+    console.log(
+      '=> ' + JSON.stringify(this.state.jsonResponse)
+    );
       
     return (
       <div>
@@ -35,14 +36,14 @@ export default class CreateAccount extends React.Component {
           <button onClick={(e) => { this._do(e) } }>CLICK</button>
 
           {
-            this.state.json && this.state.json.stringify()
+            JSON.stringify(this.state.jsonResponse)
           }
       </div>
     );
   }
 
   _do (e) {
-    console.log(e.target);
+    console.log(this);
     let url = 'http://localhost/wanda/dbconn.pl';
     fetch(url, {
       method: 'post',
@@ -55,14 +56,10 @@ export default class CreateAccount extends React.Component {
       })
     }) // Call the fetch function passing the url of the API as a parameter
     .then(function(response) {
-      console.log(response);
       return response.json();
     })
     .then(function(json) {
       console.log(json);
-      this.setState({
-        jsonResponse: json
-      })
     })
     .catch(function(error) {
       // This is where you run code if the server returns any errors
