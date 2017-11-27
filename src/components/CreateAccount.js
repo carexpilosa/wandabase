@@ -52,7 +52,7 @@ export default class CreateAccount extends React.Component {
       } else if(child.id === 'gender') {
         data['gender'] = child.value;
       } else if(child.id === 'is_admin') {
-        data['is_admin'] = child.value;
+        data['is_admin'] = child.checked ? 'on' : '';
       } else if(child.id === 'motto') {
         data['motto'] = child.value;
       }
