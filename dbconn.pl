@@ -73,7 +73,7 @@ if( $request_method eq 'GET' ) {
 
 
     my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
-    my $dbh = DBI->connect($dsn, 'root', 'zM0dem');
+    my $dbh = DBI->connect($dsn, 'markus', 'markus');
     my $statement = 'INSERT INTO members (
         username, password, gender, date_of_membership, is_admin, motto
       ) VALUES(?, ?, ?, ?, ?, ?)';

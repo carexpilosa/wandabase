@@ -5,6 +5,12 @@ export default class CreateAccount extends React.Component {
   }
 
   render() {
+    if (this.state.json) {
+      console.log(
+        '=> ' + this.state.json.stringify()
+      );
+    }
+      
     return (
       <div>
         Neuer Account
@@ -27,6 +33,10 @@ export default class CreateAccount extends React.Component {
           <textarea name="motto" id="motto" rows="4" cols="50"></textarea>
           <br />
           <button onClick={(e) => { this._do(e) } }>CLICK</button>
+
+          {
+            this.state.json && this.state.json.stringify()
+          }
       </div>
     );
   }
@@ -50,6 +60,9 @@ export default class CreateAccount extends React.Component {
     })
     .then(function(json) {
       console.log(json);
+      this.setState({
+        jsonResponse: json
+      })
     })
     .catch(function(error) {
       // This is where you run code if the server returns any errors
