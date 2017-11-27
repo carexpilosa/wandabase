@@ -3,15 +3,12 @@ export default class CreateAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jsonResponse: '+++'
+      jsonResponse: {}
     }
   }
 
   render() {
-    console.log(
-      '=> ' + JSON.stringify(this.state.jsonResponse)
-    );
-      
+    console.log(this.state.jsonResponse);
     return (
       <div>
         Neuer Account
@@ -36,30 +33,42 @@ export default class CreateAccount extends React.Component {
           <button onClick={(e) => { this._do(e) } }>CLICK</button>
 
           {
-            JSON.stringify(this.state.jsonResponse)
+            Object.keys(this.state.jsonResponse).map((key, idx) => {
+              return <div key={idx}>{key} => {this.state.jsonResponse[key]}</div>;
+            })
           }
       </div>
     );
   }
 
   _do (e) {
-    console.log(this);
+    let data = {};
+    for(let i=0; i < e.target.parentElement.children.length; i++) {
+      let child = e.target.parentElement.children[i];
+      if(child.id === 'username') {
+        data['username'] = child.value;
+      } else if(child.id === 'password') {
+        data['password'] = child.value;
+      } else if(child.id === 'gender') {
+        data['gender'] = child.value;
+      } else if(child.id === 'is_admin') {
+        data['is_admin'] = child.value;
+      } else if(child.id === 'motto') {
+        data['motto'] = child.value;
+      }
+    }
+    let that = this;
     let url = 'http://localhost/wanda/dbconn.pl';
     fetch(url, {
       method: 'post',
-      body: JSON.stringify({
-        "username": document.getElementById('username').value,
-        "password": document.getElementById('password').value,
-        "gender": document.getElementById('gender').value,
-        "is_admin": document.getElementById('is_admin').value,
-        "motto": document.getElementById('motto').value
-      })
+      body: JSON.stringify(data)
     }) // Call the fetch function passing the url of the API as a parameter
     .then(function(response) {
+      console.log(url);
       return response.json();
     })
     .then(function(json) {
-      console.log(json);
+      that.setState({jsonResponse: json});
     })
     .catch(function(error) {
       // This is where you run code if the server returns any errors

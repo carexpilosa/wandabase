@@ -79,7 +79,10 @@ if( $request_method eq 'GET' ) {
       ) VALUES(?, ?, ?, ?, ?, ?)';
     my $sth = $dbh->prepare($statement);
     warn $statement . " => " . join ', ', @bindValues;
-    $sth->execute(@bindValues);
+    my $success = $sth->execute(@bindValues);
+
+    $data->{'success'} = $success;
+    warn "DATA => ".Data::Dumper::Dumper $data;
 
     $rest_data = $page->header(
       -content_type => 'application/json;charset=UTF-8',
