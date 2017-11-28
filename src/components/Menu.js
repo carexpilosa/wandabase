@@ -11,10 +11,10 @@ export default class Menu extends React.Component {
         <tbody>
           <tr>
             <td width="100">
-              <Link to="/ca">new user</Link>
+              <Link to="/newuser">new user</Link>
               </td>
             <td width="100">
-              <Link to="/test">test</Link>
+              <Link to="/showusers">show all users</Link>
             </td>
           </tr>
         </tbody>

@@ -23,14 +23,16 @@ my $rest_data; # = $page->header('application/json;charset=UTF-8');
 
 # ------ Prüfen ob über den definierten Pfad auf den REST Service zugegriffen wurde ------
 my $path_info = $ENV{ 'PATH_INFO' };
+warn $path_info;
+my ($type, $id);
+if ($path_info =~ /^\/(.+)?\/(.*)$/) {
+  $type = $1;
+  $id = $2;
+}
 
-#$rest_data = $page->header('text/html');
-#$rest_data .= "$path_info<br />\n";
 
+warn "TYPE = $type; id=$id";
 
-$path_info =~ /^\/(.+)?\/(.*)$/;
-my $type = $1;
-my $id = $2;
 
 #if( not $type eq 'bookdb' ){
 #  exit;
@@ -43,15 +45,25 @@ $rest_data .= "REQUEST_METHOD => $request_method\n";
 if( $request_method eq 'GET' ) {
   $rest_data .= "GET";
 
+  if ($type eq 'members' && $id eq 'all') {
+    $rest_data = to_json({
+      'member1' => 'karl',
+      'member2' => 'horst',
+      'member3' => 'schnirz'
+    });
+  } else {
+    $rest_data = to_json({
+      'ein' => 'test',
+      'als' => 'hash',
+      'meth' => 'GET'
+    });
+  }
 
-  $rest_data = to_json({
-    'ein' => 'test',
-    'als' => 'hash',
-    'meth' => 'GET'
-  });
+  
   $rest_data = $page->header(
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*') . $rest_data;
+  
 } elsif ( $request_method eq 'POST' ) { # ----- Daten schreiben
     my $data = from_json($page->param( 'POSTDATA' ));
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);

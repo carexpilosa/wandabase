@@ -14,9 +14,12 @@ my $path_info = $ENV{ 'PATH_INFO' };
 #$rest_data .= "$path_info<br />\n";
 
 
-$path_info =~ /^\/(.+)?\/(.*)$/;
+$path_info =~ /^\/(.+)?\/(.*)\/(.*)$/;
 my $type = $1;
 my $id = $2;
+my $third = $3;
+
+my $comment = "Third ($third) and following url parameters will be ignored";
 
 my $html_data = $page->header(
   -content_type => 'text/html;charset=UTF-8',
@@ -31,6 +34,7 @@ my $html_data = $page->header(
   <title>Document</title>
 </head>
 <body>
+  $comment<br />
   $0/$type/$id
 </body>
 </html>
