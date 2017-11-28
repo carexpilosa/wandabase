@@ -15,14 +15,12 @@ export default class ShowUsers extends React.Component {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter
     .then(function(response) {
-      console.log(url);
       return response.json();
     })
     .then(function(json) {
       that.setState({
         jsonResponse: json
       });
-      console.log(that.state);
     })
     .catch(function(error) {
       // This is where you run code if the server returns any errors

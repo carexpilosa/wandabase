@@ -11,34 +11,16 @@ use POSIX qw(strftime);
 use JSON;
 
 my $page  = new CGI;
-
-#print "Content-type: text/html \n\n";
-
 my $rest_data; # = $page->header('application/json;charset=UTF-8');
-#print $page->header('application/json');
-# ------ Initialisierung des Datenzugriffs über DB_File ------
-#my $file = "./books.data";
-#my %data;
-#my $db = tie %data, "DB_File", $file or die "err open $file: $!\n";
 
 # ------ Prüfen ob über den definierten Pfad auf den REST Service zugegriffen wurde ------
 my $path_info = $ENV{ 'PATH_INFO' };
-warn $path_info;
 my ($type, $id);
 if ($path_info =~ /^\/(.+)?\/(.*)$/) {
   $type = $1;
   $id = $2;
 }
 
-
-warn "TYPE = $type; id=$id";
-
-
-#if( not $type eq 'bookdb' ){
-#  exit;
-#}
-
-# ------ Zugriffsmethode ermitteln
 my $request_method = $ENV{ 'REQUEST_METHOD' };
 $rest_data .= "REQUEST_METHOD => $request_method\n";
 
@@ -57,8 +39,7 @@ EOT
     my %result;
     while (my ($id, $username, $password, $gender, $date_of_membership, $is_admin, $motto) =
       $query->fetchrow_array()) {
-        warn "$id, $username, $password, $gender, $date_of_membership, $is_admin, $motto";
-        $result{$id} = {
+         $result{$id} = {
           id => $id,
           username => $username,
           password => $password,
@@ -76,16 +57,13 @@ EOT
       'meth' => 'GET'
     });
   }
-
   
   $rest_data = $page->header(
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*') . $rest_data;
-  
 } elsif ( $request_method eq 'POST' && $type eq 'members' && $id eq 'new') { # ----- Daten schreiben
     my $data = from_json($page->param( 'POSTDATA' ));
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
-    warn "DATA => ".Data::Dumper::Dumper $data;
     my @bindValues;
     map {
       my $ret;
@@ -108,11 +86,9 @@ EOT
         username, password, gender, date_of_membership, is_admin, motto
       ) VALUES(?, ?, ?, ?, ?, ?)';
     my $sth = $dbh->prepare($statement);
-    warn $statement . " => " . join ', ', @bindValues;
     my $success = $sth->execute(@bindValues);
 
     $data->{'success'} = $success;
-    warn "DATA => ".Data::Dumper::Dumper $data;
 
     $rest_data = $page->header(
       -content_type => 'application/json;charset=UTF-8',
@@ -123,5 +99,4 @@ EOT
 } else {
   $rest_data = $page->header('text/html', '404 Not found') . $rest_data;
 }
-#$rest_data = $page->header('text/html') . "OK\n";
 print $rest_data; # http Response ausgeben
