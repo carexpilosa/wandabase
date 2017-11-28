@@ -4,9 +4,6 @@ use strict;
 use warnings;
 
 use CGI;
-use DB_File;
-use Data::Dumper;
-use JSON;
 
 my $page  = new CGI;
 
