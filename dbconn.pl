@@ -59,6 +59,7 @@ EOT
       $query->fetchrow_array()) {
         warn "$id, $username, $password, $gender, $date_of_membership, $is_admin, $motto";
         $result{$id} = {
+          id => $id,
           username => $username,
           password => $password,
           gender => $gender, 
@@ -81,7 +82,7 @@ EOT
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*') . $rest_data;
   
-} elsif ( $request_method eq 'POST' ) { # ----- Daten schreiben
+} elsif ( $request_method eq 'POST' && $type eq 'members' && $id eq 'new') { # ----- Daten schreiben
     my $data = from_json($page->param( 'POSTDATA' ));
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
     warn "DATA => ".Data::Dumper::Dumper $data;

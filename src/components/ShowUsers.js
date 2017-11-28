@@ -34,16 +34,19 @@ export default class ShowUsers extends React.Component {
     return <div>
         <div>Show Users</div>
         {
-          Object.keys(this.state.jsonResponse).map((key, idx) => {
-            return <div key={idx}>{key}<br />
-              username           => {this.state.jsonResponse[key].username}<br />
-              password           => {this.state.jsonResponse[key].password}<br />
-              gender             => {this.state.jsonResponse[key].gender}<br />
-              date_of_membership => {this.state.jsonResponse[key].date_of_membership}<br />
-              is_admin           => {this.state.jsonResponse[key].is_admin}<br />
-              motto              => {this.state.jsonResponse[key].motto}<br /><br />
-            </div>;
-          })
+          Object.keys(this.state.jsonResponse)
+            .sort((a, b) => a < b)
+            .map((key, idx) => {
+              return <div key={idx}>{key}<br />
+                id                 => {this.state.jsonResponse[key].id}<br />
+                username           => {this.state.jsonResponse[key].username}<br />
+                password           => {this.state.jsonResponse[key].password}<br />
+                gender             => {this.state.jsonResponse[key].gender}<br />
+                date_of_membership => {this.state.jsonResponse[key].date_of_membership}<br />
+                is_admin           => {this.state.jsonResponse[key].is_admin}<br />
+                motto              => {this.state.jsonResponse[key].motto}<br /><br />
+              </div>;
+            })
         }
       </div>;
   }
