@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 export default class ShowUsers extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      jsonResponse: 'xxx'
+    }
 
     console.log('-------');
     let that = this;
@@ -16,7 +19,10 @@ export default class ShowUsers extends React.Component {
       return response.json();
     })
     .then(function(json) {
-      console.log({jsonResponse: json});
+      that.setState({
+        jsonResponse: json
+      });
+      console.log(that.state);
     })
     .catch(function(error) {
       // This is where you run code if the server returns any errors
@@ -25,6 +31,20 @@ export default class ShowUsers extends React.Component {
   }
 
   render() {
-    return <div>Show Users</div>;
+    return <div>
+        <div>Show Users</div>
+        {
+          Object.keys(this.state.jsonResponse).map((key, idx) => {
+            return <div key={idx}>{key}<br />
+              username           => {this.state.jsonResponse[key].username}<br />
+              password           => {this.state.jsonResponse[key].password}<br />
+              gender             => {this.state.jsonResponse[key].gender}<br />
+              date_of_membership => {this.state.jsonResponse[key].date_of_membership}<br />
+              is_admin           => {this.state.jsonResponse[key].is_admin}<br />
+              motto              => {this.state.jsonResponse[key].motto}<br /><br />
+            </div>;
+          })
+        }
+      </div>;
   }
 }

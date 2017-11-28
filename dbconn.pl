@@ -46,11 +46,28 @@ if( $request_method eq 'GET' ) {
   $rest_data .= "GET";
 
   if ($type eq 'members' && $id eq 'all') {
-    $rest_data = to_json({
-      'member1' => 'karl',
-      'member2' => 'horst',
-      'member3' => 'schnirz'
-    });
+    my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
+    my $dbh = DBI->connect($dsn, 'markus', 'markus');
+    my $statement = <<EOT;
+      SELECT id, username, password, gender, date_of_membership, is_admin, motto
+        FROM members;
+EOT
+    my $query = $dbh->prepare($statement);
+    $query->execute() or die $query->err_str;
+    my %result;
+    while (my ($id, $username, $password, $gender, $date_of_membership, $is_admin, $motto) =
+      $query->fetchrow_array()) {
+        warn "$id, $username, $password, $gender, $date_of_membership, $is_admin, $motto";
+        $result{$id} = {
+          username => $username,
+          password => $password,
+          gender => $gender, 
+          date_of_membership => $date_of_membership, 
+          is_admin => $is_admin, 
+          motto => $motto
+        }
+    }
+    $rest_data = to_json(\%result);
   } else {
     $rest_data = to_json({
       'ein' => 'test',
