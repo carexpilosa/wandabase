@@ -63,7 +63,7 @@ EOT
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*') . $rest_data;
 } elsif ( $request_method eq 'POST') {
-    $rest_data = PostConnect::postDbQuery($dbh, $type, $id);
+    $rest_data = PostConnect::postDbQuery($dbh, $type, $id, $page);
     warn $rest_data;
 } else {
   $rest_data = $page->header('text/html', '404 Not found') . $rest_data;

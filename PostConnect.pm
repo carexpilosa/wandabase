@@ -1,18 +1,23 @@
 package PostConnect;
 
+use strict;
 use JSON;
 use CGI;
 use DBI;
+use Data::Dumper;
+use POSIX qw(strftime);
 
 sub postDbQuery {
-  my ($dbh, $id, $type) = @_;
-  warn "-----------------";
+  my ($dbh, $type, $id, $page) = @_;
+  warn "----------------- $dbh, $id, $type";
   my $page  = new CGI;
   my $data = from_json($page->param( 'POSTDATA' ));
   my $rest_data;
   if ($type eq 'members' && $id eq 'new') {
+    warn "----------------- $dbh, $id, $type";
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
     my @bindValues;
+    warn "#";
     map {
       my $ret;
       if ($_ eq 'is_admin') {
@@ -26,7 +31,7 @@ sub postDbQuery {
       }
       push @bindValues, $ret;
     } ('username', 'password', 'gender', 'date_of_membership', 'is_admin', 'motto');
-
+    Data::Dumper::Dumper \@bindValues;
 
     my $statement = 'INSERT INTO members (
         username, password, gender, date_of_membership, is_admin, motto
