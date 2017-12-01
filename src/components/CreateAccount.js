@@ -58,7 +58,7 @@ export default class CreateAccount extends React.Component {
       }
     }
     let that = this;
-    let url = 'http://localhost/wanda/dbconn.pl/members/new';
+    let url = 'http://localhost/wanda/perl/dbconn.pl/members/new';
     fetch(url, {
       method: 'post',
       body: JSON.stringify(data)

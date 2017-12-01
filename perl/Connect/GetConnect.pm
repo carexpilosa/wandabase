@@ -1,4 +1,4 @@
-package PostConnect;
+package GetConnect;
 
 use strict;
 use JSON;
@@ -6,20 +6,20 @@ use CGI;
 use DBI;
 use Data::Dumper;
 use POSIX qw(strftime);
+use Connect;
 
 sub getDbQuery {
   my ($dbh, $type, $id, $page) = @_;
-  my $data = from_json($page->param( 'POSTDATA' ));
   my $rest_data;
   my $statement = <<EOT;
       SELECT id, username, password, gender, date_of_membership, is_admin, motto
         FROM members;
 EOT
-  
+  my %result;
   if ($type eq 'members' && $id eq 'all') {  
     my $query = $dbh->prepare($statement);
     $query->execute() or die $query->err_str;
-    my %result;
+    
     while (my ($id, $username, $password, $gender, $date_of_membership, $is_admin, $motto) =
       $query->fetchrow_array()) {
          $result{$id} = {
@@ -33,18 +33,17 @@ EOT
         }
     }
     $rest_data = to_json(\%result);
+    $rest_data = $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -status => '200 OK') . $rest_data;
+  } elsif ($type eq 'member' && $id) { #member called with username
+    $rest_data = Connect::errorResponse($page,
+      "/member/<username> => to bo implemented");
   } else {
-    $rest_data = to_json({
-      'ein' => 'test',
-      'als' => 'hash',
-      'meth' => 'GET'
-    });
+    $rest_data = Connect::errorResponse($page);
   }
-  
-  $rest_data = $page->header(
-    -content_type => 'application/json;charset=UTF-8',
-    -access_control_allow_origin => '*') . $rest_data;
-  return $rest_data;
+  return $rest_data;  
 }
 
 1;

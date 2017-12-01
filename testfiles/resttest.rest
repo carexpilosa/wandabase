@@ -1,5 +1,16 @@
 
-POST http://localhost/wanda/srvrest.pl HTTP/1.1
+POST http://localhost/wanda/perl/dbconn.pl/events/new HTTP/1.1
+content-type: application/json;charset=UTF-8
+        
+{
+  "headline":      "Unterwegs im Knüllebäck",
+  "description":   "Von Knüllebäck(am Hügel) wandern wir innerhalb von 36 Stunden bis Falkenberg/Mark",
+  "starttime":     "2017-12-24 18:00:00",
+  "startlocation": "vor 'Prügelpeitsch' in Knüllebäck"
+}
+
+###
+POST http://localhost/wanda/perl/dbconn.pl/members/new HTTP/1.1
 content-type: application/json
 
 {
