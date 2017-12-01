@@ -15,6 +15,7 @@ sub postDbQuery {
   my $data = $page->param( 'POSTDATA' );
   $data = from_json($data);
   my $rest_data;
+  warn "postDbQuery...";
   if ($type eq 'members' && $id eq 'new') {
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
     my @bindValues;
@@ -47,7 +48,8 @@ EOT
       -access_control_allow_origin => '*',
       -status => '200 OK'
     ) . to_json($data);
-  } elsif ($type eq 'events' && $id eq 'new') {
+  } elsif ($type eq 'event' && $id eq 'new') {
+    warn "event ...";
     $rest_data = Connect::errorResponse($page, "/events/new => to bo implemented");
     my @bindValues = (
       $data->{'headline'},
@@ -68,6 +70,7 @@ EOT
 EOT
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
+    $data->{'success'} = $success;
     
     $rest_data = $page->header(
       -content_type => 'application/json;charset=UTF-8',

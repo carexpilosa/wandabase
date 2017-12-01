@@ -14,10 +14,16 @@ export default class Menu extends React.Component {
               <Link to="/">home</Link>
             </td>
             <td width="100">
-              <Link to="/newuser">new user</Link>
+              <Link to="/newmember">new user</Link>
             </td>
             <td width="100">
-              <Link to="/showusers">show all users</Link>
+              <Link to="/showmembers">show all users</Link>
+            </td>
+            <td width="100">
+              <Link to="/newevent">new Event</Link>
+            </td>
+            <td width="100">
+              <Link to="/showevents">show all Events</Link>
             </td>
           </tr>
         </tbody>
