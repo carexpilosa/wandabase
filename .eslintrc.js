@@ -37,7 +37,7 @@ module.exports = {
         "no-unused-vars": [
             "warn"
         ],
-        "react/jsx-uses-vars": 
+        "react/jsx-uses-vars": [
             "error"
         ]
     }

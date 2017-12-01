@@ -45,11 +45,11 @@ export default class CreateMember extends React.Component {
       } else if(child.id === 'starttime') {
         data['starttime'] = child.value;
       } else if(child.id === 'startlocation') {
-        data['startlocation'] = child.checked ? 'on' : '';
+        data['startlocation'] = child.value;
       }
     }
     let that = this;
-    let url = 'http://localhost/wanda/perl/dbconn.pl/event/new';
+    let url = 'http://localhost/wanda/perl/dbconn.pl/events/new';
     fetch(url, {
       method: 'post',
       body: JSON.stringify(data)

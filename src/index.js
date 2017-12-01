@@ -13,11 +13,13 @@ const history = createHistory();
 ReactDOM.render(
   <Router history={history}>
     <div>
-      <Menu />
-      <Route path="/newmember" component={CreateMember} />
-      <Route path="/showmembers" component={ShowMembers} />
-      <Route path="/newevent" component={CreateEvent} />
-      <Route path="/showevents" component={ShowEvents} />
+      <Route path = "/" component={Menu} />
+      <div>
+        <Route path="/newmember" component={CreateMember} />
+        <Route path="/showmembers" component={ShowMembers} />
+        <Route path="/newevent" component={CreateEvent} />
+        <Route path="/showevents" component={ShowEvents} />
+      </div>
     </div>
   </Router>,
   document.getElementById('app')

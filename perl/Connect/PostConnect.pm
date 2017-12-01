@@ -14,63 +14,31 @@ sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
   my $data = $page->param( 'POSTDATA' );
   $data = from_json($data);
-  my $rest_data;
-  if ($type eq 'members' && $id eq 'new') {
-    $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
+  my ($rest_data, %fieldArray, $tableName);
+  if ($id eq 'new') {
+    $tableName = $type;
+    %fieldArray = _getFieldArray($tableName);
+    
+    my @fieldNameArray = sort(keys (%fieldArray));
     my @bindValues;
     map {
-      my $ret;
-      if ($_ eq 'is_admin') {
-        $ret = $data->{$_} && $data->{$_} eq 'on' ? 1 : 0;
-      } elsif($_ eq 'motto') {
-        $ret = $data->{$_} || '';
-      } elsif($_ eq 'date_of_membership') {
-        $ret = strftime('%Y-%m-%d', localtime);
-      } else {
-        $ret = $data->{$_};
-      }
+      my $ret = $fieldArray{$_}->{'returnValue'}->($data->{$_});
       push @bindValues, $ret;
-    } ('username', 'password', 'gender', 'date_of_membership', 'is_admin', 'motto');
+    } @fieldNameArray;
 
-    my $statement = <<'EOT';
-      INSERT INTO members (
-        username, password, gender, date_of_membership, is_admin, motto
-      ) VALUES(?, ?, ?, ?, ?, ?)
+    my $colnames = join ',', @fieldNameArray;
+    my $placeholder = join(',', map { '?' } @fieldNameArray);
+
+    my $statement = <<EOT;
+      INSERT INTO $tableName (
+        $colnames
+      ) VALUES($placeholder)
 EOT
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
 
     $data->{'success'} = $success;
 
-    $rest_data = $page->header(
-      -content_type => 'application/json;charset=UTF-8',
-      -access_control_allow_origin => '*',
-      -status => '200 OK'
-    ) . to_json($data);
-  } elsif ($type eq 'event' && $id eq 'new') {
-    warn "event ...";
-    $rest_data = Connect::errorResponse($page, "/events/new => to bo implemented");
-    my @bindValues = (
-      $data->{'headline'},
-      $data->{'description'},
-      strftime('%Y-%m-%d %H:%M:%S', localtime),
-      $data->{'starttime'},
-      $data->{'startlocation'},
-    );
-
-    my $statement = <<'EOT';
-      INSERT INTO events (
-        headline,
-        description,
-        created,
-        starttime,
-        startlocation
-      ) VALUES (?, ?, ?, ?, ?)
-EOT
-    my $sth = $dbh->prepare($statement);
-    my $success = $sth->execute(@bindValues);
-    $data->{'success'} = $success;
-    
     $rest_data = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
@@ -80,6 +48,80 @@ EOT
     $rest_data = Connect::errorResponse($page);
   }
   return $rest_data;
+}
+
+sub _getFieldArray {
+  my $tableName = shift;
+  if ($tableName eq 'members') {
+    return (
+      'username' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },
+      'password' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },          
+      'gender' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },
+      'date_of_membership' => {
+        'returnValue' => sub {
+          my $value = shift;
+          return $value ? $value : strftime('%Y-%m-%d %H:%M:%S', localtime);
+        }
+      },
+      'is_admin' => {
+        'returnValue' => sub {
+          my $value = shift;
+          return $value && $value eq 'on' ? 1 : 0;
+        }
+      },
+      'motto' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      }
+    );
+  } elsif ($tableName eq 'events') {
+    return (
+      'headline' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },
+      'description' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },
+      'created' => {
+        'returnValue' => sub {
+          my $value = shift;
+          if ($value) {
+            return $value;
+          } else {
+            return strftime('%Y-%m-%d %H:%M:%S', localtime);
+          }
+        }
+      },
+      'starttime' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      },
+      'startlocation' => {
+        'returnValue' => sub {
+          return shift;
+        }
+      }
+
+    );
+  }
 }
 
 1;
