@@ -26,7 +26,8 @@ module.exports = {
     loaders: [
       {
         loaders: ['babel-loader'],
-        include: path.join(__dirname, 'src')
+        include: path.join(__dirname, 'src'),
+        loaders: ['babel-loader', 'eslint-loader']
       }
     ]
   }

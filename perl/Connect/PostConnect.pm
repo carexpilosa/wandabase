@@ -15,7 +15,6 @@ sub postDbQuery {
   my $data = $page->param( 'POSTDATA' );
   $data = from_json($data);
   my $rest_data;
-  warn "postDbQuery...";
   if ($type eq 'members' && $id eq 'new') {
     $data->{'date_of_membership'} = strftime('%Y-%m-%d', localtime);
     my @bindValues;

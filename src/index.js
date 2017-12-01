@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory, Redirect } from 'react-router';
+import { Router, Route } from 'react-router';
 import createHistory from 'history/createBrowserHistory';
-import Menu from "./components/Menu";
-import CreateMember from "./components/CreateMember";
-import ShowMembers from "./components/ShowMembers";
-import CreateEvent from "./components/CreateEvent";
-import ShowEvents from "./components/ShowEvents";
+import Menu from './components/Menu';
+import CreateMember from './components/CreateMember';
+import ShowMembers from './components/ShowMembers';
+import CreateEvent from './components/CreateEvent';
+import ShowEvents from './components/ShowEvents';
 
 const history = createHistory();
 

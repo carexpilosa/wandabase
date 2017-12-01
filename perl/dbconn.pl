@@ -14,7 +14,6 @@ use Connect::PostConnect;
 use Connect::GetConnect;
 
 my $page  = new CGI;
-warn "-----------";
 
 # ------ Prüfen ob über den definierten Pfad auf den REST Service zugegriffen wurde ------
 my $path_info = $ENV{ 'PATH_INFO' };
@@ -28,12 +27,11 @@ my $request_method = $ENV{ 'REQUEST_METHOD' };
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'markus', 'markus');
 $dbh->{'mysql_enable_utf8'} = 1;
-my $rest_data = '';
+my $rest_data;
 
 if( $request_method eq 'GET' ) {
   $rest_data = GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
-  warn "post";
   $rest_data = PostConnect::postDbQuery($dbh, $type, $id, $page);
 } else {
   $rest_data = to_json({'error' => "Wrong request method $request_method"});
