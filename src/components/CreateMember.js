@@ -10,7 +10,7 @@ export default class CreateMember extends React.Component {
   render() {
     return (
       <div>
-        <h3>Neuer Member Account</h3>
+        <h3>Neuen Teilnehmer anlegen</h3>
         <label htmlFor="username">Username: </label>
         <input name="username" id="username" type="text" />
         <br />
@@ -62,7 +62,6 @@ export default class CreateMember extends React.Component {
       body: JSON.stringify(data)
     }) // Call the fetch function passing the url of the API as a parameter
       .then(function(response) {
-        console.log(url);
         return response.json();
       })
       .then(function(json) {

@@ -27,7 +27,7 @@ export default class ShowMembers extends React.Component {
 
   render() {
     return <div>
-      <div>Show Users</div>
+      <div>Show Events</div>
       {
         this.state.jsonResponse.hasOwnProperty('error')
           ? <span>ERROR =&gt; {this.state.jsonResponse.error}</span>
