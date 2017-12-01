@@ -15,7 +15,6 @@ use Connect::GetConnect;
 
 my $page  = new CGI;
 
-# ------ Prüfen ob über den definierten Pfad auf den REST Service zugegriffen wurde ------
 my $path_info = $ENV{ 'PATH_INFO' };
 my ($type, $id);
 if ($path_info =~ /^\/(.+)?\/(.*)$/) {

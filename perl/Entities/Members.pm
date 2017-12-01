@@ -6,7 +6,7 @@ use POSIX qw(strftime);
 
 my @ISA = ("Entities");
 
-sub fieldArray {
+sub fieldHash {
   return (
     'username' => {
       'returnValue' => sub {

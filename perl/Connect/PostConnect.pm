@@ -18,19 +18,19 @@ sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
   my $data = $page->param( 'POSTDATA' );
   $data = from_json($data);
-  my ($rest_data, %fieldArray, $tableName);
+  my ($rest_data, %fieldHash, $tableName);
   if ($id eq 'new' && $type =~ /members|events/) {
     $tableName = $type;
     my $entity;
     $entity = $type eq 'members'
       ? Entities::Members->new()
       : Entities::Events->new();
-    %fieldArray = $entity->fieldArray();
+    %fieldHash = $entity->fieldHash();
     
-    my @fieldNameArray = sort(keys (%fieldArray));
+    my @fieldNameArray = sort(keys (%fieldHash));
     my @bindValues;
     map {
-      my $ret = $fieldArray{$_}->{'returnValue'}->($data->{$_});
+      my $ret = $fieldHash{$_}->{'returnValue'}->($data->{$_});
       push @bindValues, $ret;
     } @fieldNameArray;
     
