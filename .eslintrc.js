@@ -39,6 +39,9 @@ module.exports = {
         ],
         "react/jsx-uses-vars": [
             "error"
+        ],
+        "camelcase": [
+            2, {"properties": "always"}
         ]
     }
 };

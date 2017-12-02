@@ -51,15 +51,20 @@ export default class ShowMembers extends React.Component {
                           </a>
                         </td>
                       </tr><tr>
-                        <td>password</td><td>{this.state.jsonResponse[key].password}</ td>
+                        <td>password</td>
+                        <td>{this.state.jsonResponse[key].password}</ td>
                       </tr><tr>
-                        <td>gender</td><td>{this.state.jsonResponse[key].gender}</ td>
+                        <td>gender</td>
+                        <td>{this.state.jsonResponse[key].gender}</ td>
                       </tr><tr>
-                        <td>date_of_membership</td><td>{this.state.jsonResponse[key].date_of_membership}</ td>
+                        <td>date_of_membership</td>
+                        <td>{this.state.jsonResponse[key].date_of_membership}</ td>
                       </tr><tr>
-                        <td>is_admin</td><td>{this.state.jsonResponse[key].is_admin}</ td>
+                        <td>is_admin</td>
+                        <td>{this.state.jsonResponse[key].is_admin}</ td>
                       </tr><tr>
-                        <td>motto</td><td>{this.state.jsonResponse[key].motto}</ td>
+                        <td>motto</td>
+                        <td>{this.state.jsonResponse[key].motto}</ td>
                       </tr>
                     </tbody>
                   </table>

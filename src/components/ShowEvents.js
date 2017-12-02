@@ -47,13 +47,17 @@ export default class ShowMembers extends React.Component {
                         </a>
                       </td>
                     </tr><tr>
-                      <td>description</td><td>{this.state.jsonResponse[key].description}</ td>
+                      <td>description</td>
+                      <td>{this.state.jsonResponse[key].description}</ td>
                     </tr><tr>
-                      <td>created</td><td>{this.state.jsonResponse[key].created}</ td>
+                      <td>created</td>
+                      <td>{this.state.jsonResponse[key].created}</ td>
                     </tr><tr>
-                      <td>starttime</td><td>{this.state.jsonResponse[key].starttime}</ td>
+                      <td>starttime</td>
+                      <td>{this.state.jsonResponse[key].starttime}</ td>
                     </tr><tr>
-                      <td>startlocation</td><td>{this.state.jsonResponse[key].startlocation}</ td>
+                      <td>startlocation</td>
+                      <td>{this.state.jsonResponse[key].startlocation}</ td>
                     </tr>
                   </tbody>
                 </table>
