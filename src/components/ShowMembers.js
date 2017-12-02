@@ -36,15 +36,35 @@ export default class ShowMembers extends React.Component {
           : Object.keys(this.state.jsonResponse)
             .sort(sorter)
             .map((key, idx) => {
-              return <div key={idx}>{key}<br />
-                id                 =&gt; {this.state.jsonResponse[key].id}<br />
-                username           =&gt; {this.state.jsonResponse[key].username}<br />
-                password           =&gt; {this.state.jsonResponse[key].password}<br />
-                gender             =&gt; {this.state.jsonResponse[key].gender}<br />
-                date_of_membership =&gt; {this.state.jsonResponse[key].date_of_membership}<br />
-                is_admin           =&gt; {this.state.jsonResponse[key].is_admin}<br />
-                motto              =&gt; {this.state.jsonResponse[key].motto}<br /><br />
-              </div>;
+              return (
+                <div key={idx}>
+                  <table>
+                    <tbody>
+                      <th>
+                        <td>id</td>
+                        <td>{this.state.jsonResponse[key].id}</ td>
+                      </th><tr>
+                        <td>username</td>
+                        <td>
+                          <a href={`/localhost/wanda/dbconn.pl/members/:${key}`}>
+                            {this.state.jsonResponse[key].username}
+                          </a>
+                        </td>
+                      </tr><tr>
+                        <td>password</td><td>{this.state.jsonResponse[key].password}</ td>
+                      </tr><tr>
+                        <td>gender</td><td>{this.state.jsonResponse[key].gender}</ td>
+                      </tr><tr>
+                        <td>date_of_membership</td><td>{this.state.jsonResponse[key].date_of_membership}</ td>
+                      </tr><tr>
+                        <td>is_admin</td><td>{this.state.jsonResponse[key].is_admin}</ td>
+                      </tr><tr>
+                        <td>motto</td><td>{this.state.jsonResponse[key].motto}</ td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              );
             })
       }
     </div>;

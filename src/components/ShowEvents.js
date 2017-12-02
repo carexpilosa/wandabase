@@ -35,12 +35,28 @@ export default class ShowMembers extends React.Component {
             .sort(sorter)
             .map((key, idx) => {
               return <div key={idx}>{key}<br />
-                id            =&gt; {this.state.jsonResponse[key].id}<br />
-                headline      =&gt; {this.state.jsonResponse[key].headline}<br />
-                description   =&gt; {this.state.jsonResponse[key].description}<br />
-                created       =&gt; {this.state.jsonResponse[key].created}<br />
-                starttime     =&gt; {this.state.jsonResponse[key].starttime}<br />
-                startlocation =&gt; {this.state.jsonResponse[key].startlocation}<br />
+                <table>
+                  <tbody>
+                    <th>
+                      <td>id</td><td>{this.state.jsonResponse[key].id}</ td>
+                    </th><tr>
+                      <td>title</td>
+                      <td>
+                        <a href={`/localhost/wanda/dbconn.pl/events/:${key}`}>
+                          {this.state.jsonResponse[key].title}
+                        </a>
+                      </td>
+                    </tr><tr>
+                      <td>description</td><td>{this.state.jsonResponse[key].description}</ td>
+                    </tr><tr>
+                      <td>created</td><td>{this.state.jsonResponse[key].created}</ td>
+                    </tr><tr>
+                      <td>starttime</td><td>{this.state.jsonResponse[key].starttime}</ td>
+                    </tr><tr>
+                      <td>startlocation</td><td>{this.state.jsonResponse[key].startlocation}</ td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>;
             })
       }

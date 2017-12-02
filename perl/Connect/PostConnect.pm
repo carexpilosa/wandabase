@@ -7,6 +7,7 @@ use CGI;
 use DBI;
 use Data::Dumper;
 use Encode;
+use utf8;
 
 use lib '/home/hugo/wanda/perl';
 
@@ -17,8 +18,8 @@ use Entities::Members;
 sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
   my $data = $page->param( 'POSTDATA' );
-  $data = from_json($data);
-  my ($rest_data, %fieldHash, $tableName);
+  my $dataHash = from_json($data);
+  my ($restData, %fieldHash, $tableName);
   if ($id eq 'new' && $type =~ /members|events/) {
     $tableName = $type;
     my $entity;
@@ -30,7 +31,7 @@ sub postDbQuery {
     my @fieldNameArray = sort(keys (%fieldHash));
     my @bindValues;
     map {
-      my $ret = $fieldHash{$_}->{'returnValue'}->($data->{$_});
+      my $ret = $fieldHash{$_}->{'returnValue'}->($dataHash->{$_});
       push @bindValues, $ret;
     } @fieldNameArray;
     
@@ -45,17 +46,17 @@ EOT
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
 
-    $data->{'success'} = $success;
+    $dataHash->{'success'} = $success;
 
-    $rest_data = $page->header(
+    $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
       -status => '200 OK'
-    ) . to_json($data);
+    ) . to_json($dataHash);
   } else {
-    $rest_data = Connect::errorResponse($page);
+    $restData = Connect::errorResponse($page);
   }
-  return $rest_data;
+  return $restData;
 }
 
 1;

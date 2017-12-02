@@ -10,7 +10,7 @@ use Connect;
 
 sub getDbQuery {
   my ($dbh, $type, $id, $page) = @_;
-  my ($rest_data, $statement);
+  my ($restData, $statement);
   my %result;
   if ($type eq 'members' && $id eq 'all') {
     $statement = <<'EOT';
@@ -32,42 +32,42 @@ EOT
           motto => $motto
         };
     }
-    $rest_data = to_json(\%result);
-    $rest_data = $page->header(
+    $restData = to_json(\%result);
+    $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
-      -status => '200 OK') . $rest_data;
+      -status => '200 OK') . $restData;
   } elsif ($type eq 'member' && $id) { #member called with username
-    $rest_data = Connect::errorResponse($page,
+    $restData = Connect::errorResponse($page,
       "/member/<username> => to bo implemented");
   } elsif ($type eq 'events' && $id eq 'all') {
     $statement = <<'EOT';
-      SELECT id, headline, description, created, starttime, startlocation
+      SELECT id, title, description, created, starttime, startlocation
         FROM events;
 EOT
     my $query = $dbh->prepare($statement);
     $query->execute() or die $query->err_str;
   
-    while (my ($id, $headline, $description, $created, $starttime, $startlocation)
+    while (my ($id, $title, $description, $created, $starttime, $startlocation)
       = $query->fetchrow_array()) {
           $result{$id} = {
             id => $id,
-            headline => $headline,
+            title => $title,
             description => $description,
             created => $created,
             starttime => $starttime, 
             startlocation => $startlocation
           };
     }
-    $rest_data = to_json(\%result);
-    $rest_data = $page->header(
+    $restData = to_json(\%result);
+    $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
-      -status => '200 OK') . $rest_data;
+      -status => '200 OK') . $restData;
   } else {
-    $rest_data = Connect::errorResponse($page);
+    $restData = Connect::errorResponse($page);
   }
-  return $rest_data;  
+  return $restData;  
 }
 
 1;

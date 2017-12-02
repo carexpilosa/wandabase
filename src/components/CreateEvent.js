@@ -11,8 +11,8 @@ export default class CreateMember extends React.Component {
     return (
       <div>
         <h3>Neues Event</h3>
-        <label htmlFor="headline">Titel: </label>
-        <input name="headline" id="headline" type="text" />
+        <label htmlFor="title">Titel: </label>
+        <input name="title" id="title" type="text" />
         <br />
         <label htmlFor="description">Beschreibung: </label>
         <textarea name="description" id="description" rows="4" cols="50"></textarea>
@@ -38,8 +38,8 @@ export default class CreateMember extends React.Component {
     let data = {};
     for(let i=0; i < e.target.parentElement.children.length; i++) {
       let child = e.target.parentElement.children[i];
-      if(child.id === 'headline') {
-        data['headline'] = child.value;
+      if(child.id === 'title') {
+        data['title'] = child.value;
       } else if(child.id === 'description') {
         data['description'] = child.value;
       } else if(child.id === 'starttime') {

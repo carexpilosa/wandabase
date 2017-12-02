@@ -21,7 +21,7 @@ GRANT ALL PRIVILEGES ON wanderbase . * TO 'markus'@'localhost';
 CREATE TABLE events (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
-  headline VARCHAR (100) NOT NULL,
+  title VARCHAR (100) NOT NULL,
   description TEXT NOT NULL,
   created DATETIME NOT NULL,
   starttime DATETIME NOT NULL, -- DATETIME values in 'YYYY-MM-DD HH:MM:SS',

@@ -24,16 +24,15 @@ if ($path_info =~ /^\/(.+)?\/(.*)$/) {
 my $request_method = $ENV{ 'REQUEST_METHOD' };
 
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
-my $dbh = DBI->connect($dsn, 'markus', 'markus');
-$dbh->{'mysql_enable_utf8'} = 1;
-my $rest_data;
+my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+my $restData;
 
 if( $request_method eq 'GET' ) {
-  $rest_data = GetConnect::getDbQuery($dbh, $type, $id, $page);
+  $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
-  $rest_data = PostConnect::postDbQuery($dbh, $type, $id, $page);
+  $restData = PostConnect::postDbQuery($dbh, $type, $id, $page);
 } else {
-  $rest_data = to_json({'error' => "Wrong request method $request_method"});
-  $rest_data = $page->header('text/html', '404 Not found') . $rest_data;
+  $restData = to_json({'error' => "Wrong request method $request_method"});
+  $restData = $page->header('text/html', '404 Not found') . $restData;
 }
-print $rest_data; # http Response ausgeben
+print $restData; # http Response ausgeben

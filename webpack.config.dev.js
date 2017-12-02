@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   devServer: {
-    port: 3001,
+    port: 4040,
     historyApiFallback: {
       index: '/'
     },

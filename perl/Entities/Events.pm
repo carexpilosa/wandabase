@@ -8,7 +8,7 @@ my @ISA = qw(Entities);
 
 sub fieldHash {
   return (
-    'headline' => {
+    'title' => {
       'returnValue' => sub {
         return shift;
       }
