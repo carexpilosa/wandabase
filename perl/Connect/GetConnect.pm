@@ -13,26 +13,24 @@ sub getDbQuery {
   my ($restData, $statement);
   my %result;
   if ($type eq 'members' && $id eq 'all') {
-    $statement = <<'EOT';
-      SELECT id, username, password, gender, date_of_membership, is_admin, motto
-        FROM members;
+    my $entity = $type eq 'members'
+      ? Entities::Members->new()
+      : Entities::Events->new();
+    my $sortedFieldNamesForGet = $entity->sortedFieldNamesForGet();
+    my $colnames = join (', ', @{$sortedFieldNamesForGet});
+
+    $statement = <<EOT;
+      SELECT $colnames
+        FROM $type;
 EOT
     my $query = $dbh->prepare($statement);
     $query->execute() or die $query->err_str;
     
-    while (my ($id, $username, $password, $gender, $date_of_membership, $is_admin, $motto) =
-      $query->fetchrow_array()) {
-        $result{$id} = {
-          id => $id,
-          username => $username,
-          password => $password,
-          gender => $gender, 
-          date_of_membership => $date_of_membership, 
-          is_admin => $is_admin, 
-          motto => $motto
-        };
+    while (my $res = $query->fetchrow_hashref()) {
+      $result{$res->{'id'}} = $res;
     }
     $restData = to_json(\%result);
+    warn $restData;
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',

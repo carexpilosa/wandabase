@@ -13,10 +13,6 @@ export default class ShowSingleEvent extends React.Component {
 
     let that = this;
     let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}`;
-    let crypted = btoa(url);
-    console.log(crypted);
-    let encoded = encodeURIComponent(crypted);
-    console.log(encoded);
     fetch(url, {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter

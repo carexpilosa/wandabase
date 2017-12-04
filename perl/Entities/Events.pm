@@ -7,16 +7,26 @@ use POSIX qw(strftime);
 my @ISA = qw(Entities);
 
 sub fieldHash {
-  return (
+  return {
+    'id' => {
+      'returnValue' => sub { shift }, 
+      'postdata' => 0,
+      'getdata' => 1,
+      'getorder' => 100
+    },
     'title' => {
-      'returnValue' => sub {
-        return shift;
-      }
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 200,
+      'postorder' => 200
     },
     'description' => {
-      'returnValue' => sub {
-        return shift;
-      }
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 300,
+      'postorder' => 300
     },
     'created' => {
       'returnValue' => sub {
@@ -26,19 +36,27 @@ sub fieldHash {
         } else {
           return strftime('%Y-%m-%d %H:%M:%S', localtime);
         }
-      }
+      },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 400,
+      'postorder' => 400
     },
     'starttime' => {
-      'returnValue' => sub {
-        return shift;
-      }
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 500,
+      'postorder' => 500
     },
     'startlocation' => {
-      'returnValue' => sub {
-        return shift;
-      }
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 600,
+      'postorder' => 600
     }
-  );
+  };
 }
 
 1;
