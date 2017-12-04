@@ -1,4 +1,8 @@
+/* global require */
+
 import React from 'react';
+
+const config = require ('../../wanderbase.config');
 export default class CreateMember extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +60,7 @@ export default class CreateMember extends React.Component {
       }
     }
     let that = this;
-    let url = 'http://localhost/wanda/perl/dbconn.pl/members/new';
+    let url = `${config.dbconnPath}/dbconn.pl/members/new`;
     fetch(url, {
       method: 'post',
       body: JSON.stringify(data)

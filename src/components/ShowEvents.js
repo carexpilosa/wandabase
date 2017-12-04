@@ -1,6 +1,10 @@
+/* global require */
+
 import React from 'react';
 
-export default class ShowMembers extends React.Component {
+const config = require ('../../wanderbase.config');
+
+export default class ShowEvents extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -8,7 +12,7 @@ export default class ShowMembers extends React.Component {
     };
 
     let that = this;
-    let url = 'http://localhost/wanda/perl/dbconn.pl/events/all';
+    let url = `${config.dbconnPath}/dbconn.pl/events/all`;
     fetch(url, {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter
@@ -37,12 +41,12 @@ export default class ShowMembers extends React.Component {
               return <div key={idx}>{key}<br />
                 <table>
                   <tbody>
-                    <th>
-                      <td>id</td><td>{this.state.jsonResponse[key].id}</ td>
-                    </th><tr>
+                    <tr>
+                      <th>id</th><th>{this.state.jsonResponse[key].id}</ th>
+                    </tr><tr>
                       <td>title</td>
                       <td>
-                        <a href={`/localhost/wanda/dbconn.pl/events/:${key}`}>
+                        <a href={`${config.indexPath}/showsingleevent/${key}`}>
                           {this.state.jsonResponse[key].title}
                         </a>
                       </td>

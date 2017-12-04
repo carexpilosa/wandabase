@@ -8,9 +8,11 @@ sub errorResponse {
   my ($page, $comment) = @_;
   my $restData;
   my %result = (
-    'error' => '404 Not Found'
+    'error' => '404 Not Found',
+    ($comment ?
+     ('comment' => $comment) : ()
+    )
   );
-  $result{comment} = $comment if $comment;
   Data::Dumper::Dumper \%result;
   $restData = to_json(\%result);
   $restData = $page->header(

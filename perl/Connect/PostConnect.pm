@@ -42,7 +42,7 @@ sub postDbQuery {
         $colnames
       ) VALUES($placeholder)
 EOT
-
+    warn "STATEMENT => $statement";
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
 

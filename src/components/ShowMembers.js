@@ -1,4 +1,8 @@
+/* global require */
+
 import React from 'react';
+
+const config = require ('../../wanderbase.config');
 
 export default class ShowMembers extends React.Component {
   constructor(props) {
@@ -8,7 +12,7 @@ export default class ShowMembers extends React.Component {
     };
 
     let that = this;
-    let url = 'http://localhost/wanda/perl/dbconn.pl/members/all';
+    let url = `${config.dbconnPath}/dbconn.pl/members/all`;
     fetch(url, {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter
@@ -40,13 +44,13 @@ export default class ShowMembers extends React.Component {
                 <div key={idx}>
                   <table>
                     <tbody>
-                      <th>
-                        <td>id</td>
-                        <td>{this.state.jsonResponse[key].id}</ td>
-                      </th><tr>
+                      <tr>
+                        <th>id</th>
+                        <th>{this.state.jsonResponse[key].id}</ th>
+                      </tr><tr>
                         <td>username</td>
                         <td>
-                          <a href={`/localhost/wanda/dbconn.pl/members/:${key}`}>
+                          <a href={`${config.dbconnPath}/dbconn.pl/members/${key}`}>
                             {this.state.jsonResponse[key].username}
                           </a>
                         </td>
