@@ -20,7 +20,6 @@ export default class ShowMembers extends React.Component {
         return response.json();
       })
       .then(function(json) {
-        console.log(json);
         that.setState({
           jsonResponse: json
         });
@@ -32,6 +31,7 @@ export default class ShowMembers extends React.Component {
   }
 
   render() {
+    console.log(this.state.jsonResponse);
     return <div>
       <div>Show Users</div>
       {
@@ -50,7 +50,7 @@ export default class ShowMembers extends React.Component {
                       </tr><tr>
                         <td>username</td>
                         <td>
-                          <a href={`${config.dbconnPath}/dbconn.pl/members/${key}`}>
+                          <a href={`${config.indexPath}/showsinglemember/${key}`}>
                             {this.state.jsonResponse[key].username}
                           </a>
                         </td>
