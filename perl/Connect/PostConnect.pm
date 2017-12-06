@@ -18,6 +18,8 @@ use Entities::Members;
 sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
   my $data = $page->param( 'POSTDATA' );
+  $data = decode_utf8($data);
+ 
   my $dataHash = from_json($data);
   my ($restData, $fieldHash, $tableName);
   if ($id eq 'new' && $type =~ /members|events/) {
@@ -41,7 +43,6 @@ sub postDbQuery {
         $colnames
       ) VALUES($placeholder)
 EOT
-    warn "STATEMENT => $statement";
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
 
@@ -51,7 +52,7 @@ EOT
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
       -status => '200 OK'
-    ) . to_json($dataHash);
+    ) . encode_utf8(to_json($dataHash));
   } else {
     $restData = Connect::errorResponse($page);
   }

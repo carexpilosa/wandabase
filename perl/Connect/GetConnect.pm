@@ -6,6 +6,7 @@ use CGI;
 use DBI;
 use Data::Dumper;
 use POSIX qw(strftime);
+use Encode;
 use Connect;
 
 sub getDbQuery {
@@ -33,7 +34,7 @@ sub getDbQuery {
       $result{$res->{'id'}} = $res;
     }
 
-    $restData = to_json(\%result);
+    $restData = Encode::encode_utf8(to_json(\%result));
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
