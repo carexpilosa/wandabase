@@ -22,6 +22,11 @@ export default class CreateMember extends React.Component {
         <input name="password" id="password" type="password" />
         <br />
         <button onClick={(e) => { this._do(e); } }>CLICK</button>
+        <br />
+        { this.state.jsonResponse
+            && JSON.stringify(this.state.jsonResponse) !== '{}'
+          ? JSON.stringify(this.state.jsonResponse)
+          : null }
       </div>
     );
   }
