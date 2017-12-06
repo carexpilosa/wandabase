@@ -22,7 +22,15 @@ sub postDbQuery {
  
   my $dataHash = from_json($data);
   my ($restData, $fieldHash, $tableName);
-  if ($id eq 'new' && $type =~ /members|events/) {
+  #warn $data;
+  if ($type eq 'auth' && ! $id) {
+    $restData = $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -status => '200 OK'
+    ) . encode_utf8(to_json($dataHash));
+    warn $restData;
+  } elsif ($id eq 'new' && $type =~ /members|events/) {
     $tableName = $type;
     my $entity = $type eq 'members'
       ? Entities::Members->new()

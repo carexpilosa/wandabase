@@ -11,7 +11,7 @@ export default class Menu extends React.Component {
         <tbody>
           <tr>
             <td width="100">
-              <Link to="/">home</Link>
+              <Link to="/login">login</Link>
             </td>
             <td width="100">
               <Link to="/newmember">new user</Link>
