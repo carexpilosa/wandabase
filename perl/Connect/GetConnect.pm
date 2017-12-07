@@ -27,6 +27,7 @@ sub getDbQuery {
     } else {
       $restData = Connect::errorResponse($page);
     }
+    
     my $query = $dbh->prepare($statement);
     $query->execute() or die $query->err_str;
 

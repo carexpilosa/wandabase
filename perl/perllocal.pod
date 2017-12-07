@@ -1,0 +1,44 @@
+=head2 Thu Dec  7 16:23:21 2017: C<Module> L<Mojolicious|Mojolicious>
+
+=over 4
+
+=item *
+
+C<installed into: /home/hugo/perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 7.58>
+
+=item *
+
+C<EXE_FILES: script/hypnotoad script/mojo script/morbo>
+
+=back
+
+=head2 Thu Dec  7 16:28:47 2017: C<Module> L<Session::Token|Session::Token>
+
+=over 4
+
+=item *
+
+C<installed into: /home/hugo/perl5/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.503>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

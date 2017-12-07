@@ -43,7 +43,7 @@ export default class ShowSingleMember extends React.Component {
             memberObj
               ? ['id', 'username', 'password',
                 'gender', 'date_of_membership',
-                'is_admin', 'motto'].map((fieldname, idx) => {
+                'is_admin', 'motto', 'token'].map((fieldname, idx) => {
                 return <tr key={idx}>
                   <td key="1">{fieldname}</td>
                   <td key="2">{memberObj[fieldname]}</td>

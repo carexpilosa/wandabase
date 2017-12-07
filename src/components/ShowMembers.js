@@ -69,6 +69,9 @@ export default class ShowMembers extends React.Component {
                       </tr><tr>
                         <td>motto</td>
                         <td>{this.state.jsonResponse[key].motto}</ td>
+                      </tr><tr>
+                        <td>token</td>
+                        <td>{this.state.jsonResponse[key].token}</ td>
                       </tr>
                     </tbody>
                   </table>

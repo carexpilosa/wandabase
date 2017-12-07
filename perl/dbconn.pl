@@ -28,7 +28,6 @@ my $request_method = $ENV{ 'REQUEST_METHOD' };
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 my $restData;
-warn "$request_method, $type, $id";
  
 if( $request_method eq 'GET' ) {
   $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);

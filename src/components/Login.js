@@ -12,6 +12,12 @@ export default class CreateMember extends React.Component {
   }
 
   render() {
+    let token = this.state.jsonResponse.Token;
+    if(token) {
+      var ablauf = new Date().getTime() + (1 * 60 * 60 * 1000);
+      document.cookie = `token=${token}; expires=${ablauf}`;
+    }
+    console.log(`Cookie = ${document.cookie}`);
     return (
       <div>
         <h3>Login</h3>
