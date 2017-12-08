@@ -49,7 +49,7 @@ EOT
 
     $statement
       = "UPDATE members SET token=? WHERE username=?";
-    my $query = $dbh->prepare($statement);
+    $query = $dbh->prepare($statement);
     $query->execute($token, $username);
 
     $restData = $page->header(
@@ -82,7 +82,6 @@ EOT
     my $success = $sth->execute(@bindValues);
 
     $dataHash->{'success'} = $success;
-
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
