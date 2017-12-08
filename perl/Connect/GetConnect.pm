@@ -39,6 +39,7 @@ sub getDbQuery {
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
+      -access_control_allow_headers => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
       -status => '200 OK') . $restData;
   } else {
     $restData = Connect::errorResponse($page);

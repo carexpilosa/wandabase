@@ -13,11 +13,13 @@ export default class ShowMembers extends React.Component {
 
     let that = this;
     let url = `${config.dbconnPath}/dbconn.pl/members/all`;
+    
     fetch(url, {
       'method': 'get',
       'headers': {
         'Authorization': 'Bearer lnvIFqJUpr-6RLK3FKZlEyNHnhJrh2_P',
-        'Content-Type': 'application/application/json'
+        'Content-Type': 'application/application/json',
+        'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
       .then(function(response) {
@@ -35,7 +37,6 @@ export default class ShowMembers extends React.Component {
   }
 
   render() {
-    console.log(this.state.jsonResponse);
     return <div>
       <div>Show Users</div>
       {

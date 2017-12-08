@@ -13,6 +13,9 @@ use JSON;
 use Connect::PostConnect;
 use Connect::GetConnect;
 
+map { warn $_.' => '.$ENV{$_} } sort keys %ENV;
+
+
 my $page  = new CGI;
 
 my $path_info = $ENV{ 'PATH_INFO' };
@@ -24,14 +27,11 @@ if ($path_info =~ /^\/(.+)?\/(.*)$/) {
   $type = $1;
 }
 my $request_method = $ENV{ 'REQUEST_METHOD' };
-warn $ENV{HTTP_REFERER};
 
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 my $restData;
 
-warn "=========== $type => $id ; $request_method";
- 
 if( $request_method eq 'GET' ) {
   $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
@@ -42,7 +42,7 @@ if( $request_method eq 'GET' ) {
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*',
     -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
-    -access_control_allow_headers => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    -access_control_allow_headers => 'Mode, Origin, X-Requested-With, Content-Type, Accept, Authorization',
     -status => '200 OK'
   );
 } else {
