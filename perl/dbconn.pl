@@ -37,7 +37,6 @@ if( $request_method eq 'GET' ) {
 } elsif ( $request_method eq 'POST') {
   $restData = PostConnect::postDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'OPTIONS') {
-  warn "===============";
   $restData = $page->header(
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*',
