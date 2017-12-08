@@ -20,6 +20,7 @@ export default class ShowMembers extends React.Component {
       'headers': {
         'Authorization': 'Bearer lnvIFqJUpr-6RLK3FKZlEyNHnhJrh2_P',
         'Content-Type': 'application/application/json',
+        'Token': 'lnvIFqJUpr-6RLK3FKZlEyNHnhJrh2_P',
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter

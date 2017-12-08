@@ -10,7 +10,7 @@ export default class ShowSingleEvent extends React.Component {
     super(props);
     this.state = {
       jsonResponse: {},
-      addCommentMode: false
+      commentModeActive: false
     };
 
     let that = this;
@@ -59,15 +59,15 @@ export default class ShowSingleEvent extends React.Component {
         </tbody>
       </table>
       {
-        this.state.addCommentMode ? 
+        this.state.commentModeActive
+          ? 
           <div>
             <h3>Neuer Commentaire</h3>
             <textarea cols="25" rows="5" name="comment"></textarea>
-            <token></token>
-            <button>Absenden</button>
+            <button onClick={e => this.sendComment(e)}>Absenden</button>
           </div>
           :
-          <a href="#" onClick={e => this.addComment(e)}>neuer Kommentar</a>
+          <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
       }
       
     </div>;
@@ -75,7 +75,10 @@ export default class ShowSingleEvent extends React.Component {
   addComment(e) {
     console.log('addiere Commentaire');
     this.setState({
-      addCommentMode: true
+      commentModeActive: true
     });
+  }
+  sendComment(e) {
+    console.log('verschicke --- Commentaire');
   }
 }

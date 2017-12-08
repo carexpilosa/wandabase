@@ -1,7 +1,8 @@
 
 GET http://localhost/wanda/perl/dbconn.pl/members/all HTTP/1.1
 content-type: application/json;charset=UTF-8
-authentification: bMfJqSoIUsDWdxJzLMDmF6
+authorization: Bearer bMfJqSoIUsDWdxJzLMDmF6
+mode: cors
 
 ###
 
