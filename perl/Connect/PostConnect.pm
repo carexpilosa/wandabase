@@ -19,12 +19,12 @@ use Session::Token;
 sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
   my $data = $page->param( 'POSTDATA' );
-  warn $data;
+  #warn $data;
   $data = decode_utf8($data);
  
   my $dataHash = from_json($data);
-  warn Dumper $dataHash;
-  warn 'user => '.$dataHash->{'username'}. ' <=> '. $dataHash->{'password'};
+  #warn Dumper $dataHash;
+  #warn 'user => '.$dataHash->{'username'}. ' <=> '. $dataHash->{'password'};
   my ($restData, $fieldHash, $tableName);
   if ($type eq 'auth' && ! $id) {
     my $generator = Session::Token->new;

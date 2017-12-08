@@ -13,7 +13,7 @@ use JSON;
 use Connect::PostConnect;
 use Connect::GetConnect;
 
-map { warn $_.' => '.$ENV{$_} } sort keys %ENV;
+#map { warn $_.' => '.$ENV{$_} } sort keys %ENV;
 
 
 my $page  = new CGI;
@@ -31,6 +31,8 @@ my $request_method = $ENV{ 'REQUEST_METHOD' };
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 my $restData;
+
+warn "Authorization = ".$page->param('Authorization');
 
 if( $request_method eq 'GET' ) {
   $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);

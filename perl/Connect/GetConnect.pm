@@ -42,7 +42,7 @@ sub getDbQuery {
       -access_control_allow_origin => '*',
       -access_control_allow_headers => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
       -status => '200 OK') . $restData;
-    warn Dumper $restData;
+  #warn Dumper $restData;
   } else {
     $restData = Connect::errorResponse($page);
   }

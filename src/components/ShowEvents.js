@@ -1,6 +1,7 @@
 /* global require */
 
 import React from 'react';
+import { getCookie } from '../../lib/connection';
 
 const config = require ('../../wanderbase.config');
 
@@ -12,7 +13,7 @@ export default class ShowEvents extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/all`;
+    let url = `${config.dbconnPath}/dbconn.pl/events/all?Authorization=${getCookie('token')}`;
     fetch(url, {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter

@@ -1,6 +1,7 @@
 /* global require */
 
 import React from 'react';
+import { getCookie } from '../../lib/connection';
 
 const config = require ('../../wanderbase.config');
 
@@ -13,7 +14,7 @@ export default class ShowSingleEvent extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}`;
+    let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}?Authorization=${getCookie('token')}`;
     fetch(url, {
       method: 'get'
     }) // Call the fetch function passing the url of the API as a parameter
@@ -33,7 +34,7 @@ export default class ShowSingleEvent extends React.Component {
   render() {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponse[eventID];
-    let token = this.getCookie('token');
+    let token = getCookie('token');
     console.log(`token => ${token}`);
 
     
@@ -76,16 +77,5 @@ export default class ShowSingleEvent extends React.Component {
     this.setState({
       addCommentMode: true
     });
-  }
-  getCookie(name) {
-    let cookieEntries = document.cookie.split(/;/),
-        cookieObj = {};
-    cookieEntries.map(entry => {
-      let [key, value] = entry.split(/=/);
-      key = key.replace(/^\s+|\s+$/g,'');
-      cookieObj[key] = value;
-    });
-    //console.log(cookieObj);
-    return cookieObj[name];
   }
 }
