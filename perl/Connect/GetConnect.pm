@@ -34,13 +34,15 @@ sub getDbQuery {
     while (my $res = $query->fetchrow_hashref()) {
       $result{$res->{'id'}} = $res;
     }
-
+    $result{'gottoken'} = $ENV{'HTTP_TOKEN'} || 'nueschte';
+      #if $ENV{'HTTP_TOKEN'};
     $restData = Encode::encode_utf8(to_json(\%result));
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
       -access_control_allow_headers => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
       -status => '200 OK') . $restData;
+    warn Dumper $restData;
   } else {
     $restData = Connect::errorResponse($page);
   }

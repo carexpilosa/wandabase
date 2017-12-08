@@ -8,7 +8,8 @@ export default class ShowSingleEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jsonResponse: {}
+      jsonResponse: {},
+      addCommentMode: false
     };
 
     let that = this;
@@ -32,6 +33,9 @@ export default class ShowSingleEvent extends React.Component {
   render() {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponse[eventID];
+    let token = this.getCookie('token');
+    console.log(`token => ${token}`);
+
     
     return <div>
       <div>
@@ -53,6 +57,35 @@ export default class ShowSingleEvent extends React.Component {
           }
         </tbody>
       </table>
+      {
+        this.state.addCommentMode ? 
+          <div>
+            <h3>Neuer Commentaire</h3>
+            <textarea cols="25" rows="5" name="comment"></textarea>
+            <token></token>
+            <button>Absenden</button>
+          </div>
+          :
+          <a href="#" onClick={e => this.addComment(e)}>neuer Kommentar</a>
+      }
+      
     </div>;
+  }
+  addComment(e) {
+    console.log('addiere Commentaire');
+    this.setState({
+      addCommentMode: true
+    });
+  }
+  getCookie(name) {
+    let cookieEntries = document.cookie.split(/;/),
+        cookieObj = {};
+    cookieEntries.map(entry => {
+      let [key, value] = entry.split(/=/);
+      key = key.replace(/^\s+|\s+$/g,'');
+      cookieObj[key] = value;
+    });
+    //console.log(cookieObj);
+    return cookieObj[name];
   }
 }
