@@ -1,9 +1,6 @@
-/* global require */
-
 import React from 'react';
 import { getCookie } from '../../lib/connection';
-
-const config = require ('../../wanderbase.config');
+import { config } from '../../wanderbase.config';
 
 export default class CreateMember extends React.Component {
   constructor(props) {

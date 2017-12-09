@@ -49,9 +49,13 @@ EOT
     }
 
     $statement
-      = "UPDATE members SET token=? WHERE username=?";
+      = <<EOT;
+      UPDATE `members`
+        SET token=?, token_created=CURRENT_TIMESTAMP
+          WHERE username=? AND password=?
+EOT
     $query = $dbh->prepare($statement);
-    $query->execute($token, $username);
+    $query->execute($token, $username, $password);
 
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
@@ -65,7 +69,7 @@ EOT
     if ($type eq 'members') {
       $entity = Entities::Members->new();
     } elsif ($type eq 'events') {
-      $entity = Entities::Members->new();
+      $entity = Entities::Events->new();
     } elsif ($type eq 'comments') {
       $entity = Entities::Comments->new();
     }
@@ -74,13 +78,13 @@ EOT
 
 
     my @fieldNameArray = sort(keys (%{$fieldHash}));
-    warn Dumper \@fieldNameArray;
+    #warn Dumper \@fieldNameArray;
     my @bindValues;
     map {
       my $ret = $fieldHash->{$_}->{'returnValue'}->($dataHash->{$_});
       push @bindValues, $ret;
     } @fieldNameArray;
-    warn Dumper \@bindValues;
+    #warn Dumper \@bindValues;
     
     my $colnames = join ', ', @fieldNameArray;
     my $placeholder = join(', ', map { '?' } @fieldNameArray);
