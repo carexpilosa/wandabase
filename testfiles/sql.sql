@@ -35,7 +35,7 @@ CREATE TABLE comments (
   content TEXT NOT NULL,
   created DATETIME NOT NULL,
   member_id INT UNSIGNED NOT NULL,
-  event_id INT UNSIGNED NOT NULL,
+  event_id INT UNSIGNED NOT NULL
 );
 
 ALTER TABLE members ADD token_created DATETIME NOT NULL;

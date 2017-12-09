@@ -86,7 +86,11 @@ export default class ShowSingleEvent extends React.Component {
   sendComment() {
     console.log('verschicke --- Commentaire');
     let url = `${config.dbconnPath}/dbconn.pl/comments/new`,
-      data = {},
+      data = {
+        'member_id': 123,
+        'event_id': 123,
+        'content': 'content'
+      },
       that = this;
 
     fetch(url, {

@@ -66,7 +66,14 @@ sub fieldHash {
       'returnValue' => sub { shift },
       'getdata' => 1,
       'getorder' => 800
-    }
+    },
+    'token_created' => {
+      'returnValue' => sub { shift },
+      'getdata' => 1,
+      'getorder' => 900,
+      'postorder' => 900,
+      'postdata' => 1
+    },
   };
 }
 

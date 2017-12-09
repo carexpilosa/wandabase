@@ -14,6 +14,7 @@ use lib '/home/hugo/wanda/perl';
 use Connect;
 use Entities::Events;
 use Entities::Members;
+use Entities::Comments;
 use Session::Token;
 
 sub postDbQuery {
@@ -23,7 +24,7 @@ sub postDbQuery {
   $data = decode_utf8($data);
  
   my $dataHash = from_json($data);
-  #warn Dumper $dataHash;
+  warn Dumper $dataHash;
   #warn 'user => '.$dataHash->{'username'}. ' <=> '. $dataHash->{'password'};
   my ($restData, $fieldHash, $tableName);
   if ($type eq 'auth' && ! $id) {
@@ -59,27 +60,27 @@ EOT
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
     $tableName = $type;
+
     my $entity;
-    switch ($type) {
-      case 'members':
-        $entity = Entities::Members->new();
-        break;
-      case 'envents':
-        $entity = Entities::Members->new();
-        break;
-      case 'comments':
-        $entity = Entities::Comments->new();
-        break;
+    if ($type eq 'members') {
+      $entity = Entities::Members->new();
+    } elsif ($type eq 'events') {
+      $entity = Entities::Members->new();
+    } elsif ($type eq 'comments') {
+      $entity = Entities::Comments->new();
     }
-    
+
     $fieldHash = $entity->fieldHash();
-    
+
+
     my @fieldNameArray = sort(keys (%{$fieldHash}));
+    warn Dumper \@fieldNameArray;
     my @bindValues;
     map {
       my $ret = $fieldHash->{$_}->{'returnValue'}->($dataHash->{$_});
       push @bindValues, $ret;
     } @fieldNameArray;
+    warn Dumper \@bindValues;
     
     my $colnames = join ', ', @fieldNameArray;
     my $placeholder = join(', ', map { '?' } @fieldNameArray);
@@ -88,6 +89,7 @@ EOT
         $colnames
       ) VALUES($placeholder)
 EOT
+    warn $statement;
     my $sth = $dbh->prepare($statement);
     my $success = $sth->execute(@bindValues);
 

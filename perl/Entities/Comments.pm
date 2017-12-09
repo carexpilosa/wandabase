@@ -14,19 +14,12 @@ sub fieldHash {
       'getdata' => 1,
       'getorder' => 100
     },
-    'member_id' => {
+    'content' => {
       'returnValue' => sub { shift },
       'postdata' => 1,
       'getdata' => 1,
       'getorder' => 200,
       'postorder' => 200
-    },
-    'content' => {
-      'returnValue' => sub { shift },
-      'postdata' => 1,
-      'getdata' => 1,
-      'getorder' => 300,
-      'postorder' => 300
     },
     'created' => {
       'returnValue' => sub {
@@ -39,9 +32,23 @@ sub fieldHash {
       },
       'postdata' => 1,
       'getdata' => 1,
+      'getorder' => 300,
+      'postorder' => 300
+    },
+    'member_id' => {
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
       'getorder' => 400,
       'postorder' => 400
-    }
+    },
+    'event_id' => {
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 500,
+      'postorder' => 500
+    },
   };
 }
 
