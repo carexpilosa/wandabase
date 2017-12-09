@@ -19,8 +19,10 @@ use Session::Token;
 
 sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
+
+  warn "VALIID ?? => ".Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
+
   my $data = $page->param( 'POSTDATA' );
-  #warn $data;
   $data = decode_utf8($data);
  
   my $dataHash = from_json($data);
@@ -63,6 +65,8 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
+    return Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
+      unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
     $tableName = $type;
 
     my $entity;

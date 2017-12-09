@@ -14,12 +14,6 @@ use Connect::PostConnect;
 use Connect::GetConnect;
 use Entities;
 
-#map { warn $_.' => '.$ENV{$_} } sort keys %ENV;
-
-my $tokenIsValid = Entities::tokenIsValid('WKqu5btU6OVXA3Zdky3Y1S');
-
-warn "XXXXXXXXXXXX => Token WKqu5btU6OVXA3Zdky3Y1S is Valid? => $tokenIsValid";
-
 my $page  = new CGI;
 
 my $path_info = $ENV{ 'PATH_INFO' };

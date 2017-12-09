@@ -54,7 +54,9 @@ EOT
   my $query = $dbh->prepare($statement);
   $query->execute($token) or die $query->err_str;
 
-  my $diff = $query->fetchrow_hashref()
+  my $res = $query->fetchrow_hashref();
+  return 0 unless $res;
+  my $diff = $res
     ->{'TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)'};
   return $diff && $diff =~ /^\d+$/ && $diff < 3600;
 }
