@@ -13,9 +13,14 @@ export default class ShowEvents extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/all?Authorization=${getCookie('token')}`;
+    let url = `${config.dbconnPath}/dbconn.pl/events/all`;
     fetch(url, {
-      method: 'get'
+      method: 'get',
+      'headers': {
+        'Content-Type': 'application/application/json',
+        'Token': getCookie('token'),
+        'mode': 'cors'
+      }
     }) // Call the fetch function passing the url of the API as a parameter
       .then(function(response) {
         return response.json();

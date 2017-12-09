@@ -13,14 +13,13 @@ export default class ShowMembers extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/members/all?Authorization=${getCookie('token')}`;
+    let url = `${config.dbconnPath}/dbconn.pl/members/all`;
     
     fetch(url, {
       'method': 'get',
       'headers': {
-        'Authorization': 'Bearer lnvIFqJUpr-6RLK3FKZlEyNHnhJrh2_P',
         'Content-Type': 'application/application/json',
-        'Token': 'lnvIFqJUpr-6RLK3FKZlEyNHnhJrh2_P',
+        'Token': getCookie('token'),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter

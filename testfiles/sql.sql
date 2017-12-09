@@ -7,7 +7,8 @@ CREATE TABLE members (
   date_of_membership DATE NOT NULL,
   is_admin TINYINT(1),
   motto TEXT,
-  token VARCHAR(50)
+  token VARCHAR(50),
+  token_created DATETIME
 );
 
 INSERT INTO members (id, username) VALUES (1, 'horst');
@@ -27,3 +28,14 @@ CREATE TABLE events (
   starttime DATETIME NOT NULL, -- DATETIME values in 'YYYY-MM-DD HH:MM:SS',
   startlocation VARCHAR(256)
 );
+
+CREATE TABLE comments (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id),
+  content TEXT NOT NULL,
+  created DATETIME NOT NULL,
+  member_id INT UNSIGNED NOT NULL,
+  event_id INT UNSIGNED NOT NULL,
+);
+
+ALTER TABLE members ADD token_created DATETIME NOT NULL;

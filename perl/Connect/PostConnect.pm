@@ -57,11 +57,21 @@ EOT
       -access_control_allow_origin => '*',
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
-  } elsif ($id eq 'new' && $type =~ /members|events/) {
+  } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
     $tableName = $type;
-    my $entity = $type eq 'members'
-      ? Entities::Members->new()
-      : Entities::Events->new();
+    my $entity;
+    switch ($type) {
+      case 'members':
+        $entity = Entities::Members->new();
+        break;
+      case 'envents':
+        $entity = Entities::Members->new();
+        break;
+      case 'comments':
+        $entity = Entities::Comments->new();
+        break;
+    }
+    
     $fieldHash = $entity->fieldHash();
     
     my @fieldNameArray = sort(keys (%{$fieldHash}));

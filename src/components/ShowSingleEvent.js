@@ -14,9 +14,14 @@ export default class ShowSingleEvent extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}?Authorization=${getCookie('token')}`;
+    let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}`;
     fetch(url, {
-      method: 'get'
+      method: 'get',
+      'headers': {
+        'Content-Type': 'application/application/json',
+        'Token': getCookie('token'),
+        'mode': 'cors'
+      }
     }) // Call the fetch function passing the url of the API as a parameter
       .then(function(response) {
         return response.json();
@@ -64,7 +69,7 @@ export default class ShowSingleEvent extends React.Component {
           <div>
             <h3>Neuer Commentaire</h3>
             <textarea cols="25" rows="5" name="comment"></textarea>
-            <button onClick={e => this.sendComment(e)}>Absenden</button>
+            <button onClick={() => this.sendComment()}>Absenden</button>
           </div>
           :
           <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
@@ -72,13 +77,37 @@ export default class ShowSingleEvent extends React.Component {
       
     </div>;
   }
-  addComment(e) {
+  addComment() {
     console.log('addiere Commentaire');
     this.setState({
       commentModeActive: true
     });
   }
-  sendComment(e) {
+  sendComment() {
     console.log('verschicke --- Commentaire');
+    let url = `${config.dbconnPath}/dbconn.pl/comments/new`,
+      data = {},
+      that = this;
+
+    fetch(url, {
+      method: 'post',
+      'headers': {
+        'Content-Type': 'application/application/json',
+        'Token': getCookie('token'),
+        'mode': 'cors'
+      },
+      body: JSON.stringify(data)
+    }) // Call the fetch function passing the url of the API as a parameter
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        that.setState({
+          jsonResponse: json
+        });
+      })
+      .catch(function(error) {
+        return `{error = "${error}"}`;
+      });
   }
 }

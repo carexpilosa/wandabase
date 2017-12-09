@@ -28,14 +28,9 @@ if ($path_info =~ /^\/(.+)?\/(.*)$/) {
 }
 my $request_method = $ENV{ 'REQUEST_METHOD' };
 
-my %headers = map { $_ => $page->http($_) } $page->http();
-warn Dumper \%headers;
-
 my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
 my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 my $restData;
-
-warn "Authorization = ".$page->param('Authorization');
 
 if( $request_method eq 'GET' ) {
   $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);
@@ -46,7 +41,7 @@ if( $request_method eq 'GET' ) {
     -content_type => 'application/json;charset=UTF-8',
     -access_control_allow_origin => '*',
     -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
-    -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
     -status => '200 OK'
   );
 } else {
@@ -54,3 +49,4 @@ if( $request_method eq 'GET' ) {
   $restData = $page->header('text/html', '404 Not found') . $restData;
 }
 print $restData; # http Response ausgeben
+

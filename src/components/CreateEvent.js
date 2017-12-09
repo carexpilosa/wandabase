@@ -1,6 +1,7 @@
 /* global require */
 
 import React from 'react';
+import { getCookie } from '../../lib/connection';
 
 const config = require ('../../wanderbase.config');
 
@@ -57,6 +58,11 @@ export default class CreateMember extends React.Component {
     let url = `${config.dbconnPath}/dbconn.pl/events/new`;
     fetch(url, {
       method: 'post',
+      'headers': {
+        'Content-Type': 'application/application/json',
+        'Token': getCookie('token'),
+        'mode': 'cors'
+      },
       body: JSON.stringify(data)
     }) // Call the fetch function passing the url of the API as a parameter
       .then(function(response) {
