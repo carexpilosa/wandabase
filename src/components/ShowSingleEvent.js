@@ -38,10 +38,10 @@ export default class ShowSingleEvent extends React.Component {
   render() {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID];
-    let token = getCookie('token');
-    console.log(document.cookie);
+    //let token = getCookie('token');
+    //console.log(document.cookie);
 
-    console.log(eventObj);
+    //console.log(eventObj);
     
     return <div>
       <div>
@@ -68,8 +68,8 @@ export default class ShowSingleEvent extends React.Component {
           ? 
           <div>
             <h3>Neuer Commentaire</h3>
-            <textarea cols="25" rows="5" name="comment"></textarea>
-            <button onClick={() => this.sendComment()}>Absenden</button>
+            <textarea cols="25" rows="5" name="comment" id="comment"></textarea>
+            <button onClick={() => this.sendComment(eventID)}>Absenden</button>
           </div>
           :
           <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
@@ -83,12 +83,12 @@ export default class ShowSingleEvent extends React.Component {
       commentModeActive: true
     });
   }
-  sendComment() {
-    console.log('verschicke --- Commentaire');
+  sendComment(eventID) {
+    console.log('verschicke --- Commentaire mit Token ' + getCookie('token'));
     let url = `${config.dbconnPath}/dbconn.pl/comments/new`,
       data = {
         'member_id': 123,
-        'event_id': 123,
+        'event_id': eventID,
         'content': 'content'
       },
       that = this;

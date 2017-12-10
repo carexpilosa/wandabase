@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router';
 import createHistory from 'history/createBrowserHistory';
+//import { createStore } from 'redux';
 import Menu from './components/Menu';
 import CreateMember from './components/CreateMember';
 import ShowMembers from './components/ShowMembers';
@@ -11,7 +12,9 @@ import ShowSingleEvent from './components/ShowSingleEvent';
 import ShowSingleMember from './components/ShowSingleMember';
 import Login from './components/Login';
 
+
 const history = createHistory();
+//let store = createStore(...);
 
 ReactDOM.render(
   <Router history={history}>

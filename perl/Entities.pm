@@ -3,6 +3,7 @@ package Entities;
 use Data::Dumper;
 use JSON;
 use CGI;
+#use Entities::GetConnect;
 
 
 sub new {
@@ -59,6 +60,25 @@ EOT
   my $diff = $res
     ->{'TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)'};
   return $diff && $diff =~ /^\d+$/ && $diff < 3600;
+}
+
+sub getMemberForValidToken {
+  my $token = shift;
+  my $page  = new CGI;
+  my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
+  my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+
+  my $statement = <<EOT;
+    SELECT id, username, TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)
+      FROM members
+        WHERE token=?
+EOT
+  my $res = $query->fetchrow_hashref();
+  return 0 unless $res;
+  my $diff = $res
+    ->{'TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)'};
+  return $diff && $diff =~ /^\d+$/ && $diff < 3600
+    ? $res : undef;
 }
 
 1;

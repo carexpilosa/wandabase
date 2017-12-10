@@ -59,4 +59,6 @@ sub fieldHash {
   };
 }
 
+sub getEventById {}
+
 1;

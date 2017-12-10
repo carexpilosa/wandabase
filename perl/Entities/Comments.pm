@@ -52,4 +52,8 @@ sub fieldHash {
   };
 }
 
+sub getCommentById {}
+sub getAnswers {}
+sub getPredecessor {}
+
 1;

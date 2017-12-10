@@ -77,4 +77,8 @@ sub fieldHash {
   };
 }
 
+sub getMemberByValidToken {}
+sub getMemberById {}
+
+
 1;

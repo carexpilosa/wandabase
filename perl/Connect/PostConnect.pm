@@ -24,7 +24,8 @@ sub postDbQuery {
   $data = decode_utf8($data);
  
   my $dataHash = from_json($data);
-  warn Dumper $dataHash;
+  warn "xxxxxxxxxxxxxxxxxxxxxxx2 $type $id ";
+  #warn Dumper $dataHash;
   #warn 'user => '.$dataHash->{'username'}. ' <=> '. $dataHash->{'password'};
   my ($restData, $fieldHash, $tableName);
   if ($type eq 'auth' && ! $id) {
@@ -63,8 +64,11 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
+    warn $ENV{'HTTP_TOKEN'}."######".Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
+
     return Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
       unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
+    warn "######";
     $tableName = $type;
 
     my $entity;
@@ -77,7 +81,7 @@ EOT
     }
 
     $fieldHash = $entity->fieldHash();
-
+    warn Dumper $fieldHash;
 
     my @fieldNameArray = sort(keys (%{$fieldHash}));
     #warn Dumper \@fieldNameArray;
@@ -108,6 +112,7 @@ EOT
   } else {
     $restData = Connect::errorResponse($page);
   }
+  warn Dumper $restData;
   return $restData;
 }
 
