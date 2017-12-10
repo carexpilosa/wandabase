@@ -6,6 +6,8 @@ export default class ShowSingleEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      jsonResponseEvents: {},
+      jsonResponseComment: {},
       jsonResponse: {},
       commentModeActive: false
     };
@@ -25,7 +27,7 @@ export default class ShowSingleEvent extends React.Component {
       })
       .then(function(json) {
         that.setState({
-          jsonResponse: json
+          jsonResponseEvents: json
         });
       })
       .catch(function(error) {
@@ -35,14 +37,15 @@ export default class ShowSingleEvent extends React.Component {
 
   render() {
     let eventID = this.props.match.params.id,
-      eventObj = this.state.jsonResponse[eventID];
+      eventObj = this.state.jsonResponseEvents[eventID];
     let token = getCookie('token');
-    console.log(`token => ${token}`);
+    console.log(document.cookie);
 
+    console.log(eventObj);
     
     return <div>
       <div>
-        <h3>Show Single Event {eventID}</h3>
+        <h3>Show Single Event {eventID} {document.cookie}</h3>
       </div>
       <table>
         <tbody>
@@ -104,7 +107,7 @@ export default class ShowSingleEvent extends React.Component {
       })
       .then(function(json) {
         that.setState({
-          jsonResponse: json
+          jsonResponseComment: json
         });
       })
       .catch(function(error) {

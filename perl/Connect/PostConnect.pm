@@ -20,8 +20,6 @@ use Session::Token;
 sub postDbQuery {
   my ($dbh, $type, $id, $page) = @_;
 
-  warn "VALIID ?? => ".Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
-
   my $data = $page->param( 'POSTDATA' );
   $data = decode_utf8($data);
  
