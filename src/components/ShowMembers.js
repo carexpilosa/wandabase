@@ -11,7 +11,7 @@ export default class ShowMembers extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/members/all`;
+    let url = `${config.apiPath}/api.pl/members/all`;
     
     fetch(url, {
       'method': 'get',

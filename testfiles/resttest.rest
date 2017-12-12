@@ -1,5 +1,5 @@
 
-POST http://localhost/wanda/perl/dbconn.pl/comments/new HTTP/1.1
+POST http://localhost/wanda/perl/api.pl/comments/new HTTP/1.1
 content-type: application/json;charset=UTF-8
         
 {
@@ -9,7 +9,7 @@ content-type: application/json;charset=UTF-8
 
 ###
 
-GET http://localhost/wanda/perl/dbconn.pl/members/all HTTP/1.1
+GET http://localhost/wanda/perl/api.pl/members/all HTTP/1.1
 content-type: application/json;charset=UTF-8
 authorization: Bearer bMfJqSoIUsDWdxJzLMDmF6
 mode: cors
@@ -17,13 +17,13 @@ mode: cors
 ###
 
 
-GET http://localhost/wanda/perl/dbconn.pl/events/all HTTP/1.1
+GET http://localhost/wanda/perl/api.pl/events/all HTTP/1.1
 content-type: application/json;charset=UTF-8
 
 ###
 
 
-POST http://localhost/wanda/perl/dbconn.pl/events/new HTTP/1.1
+POST http://localhost/wanda/perl/api.pl/events/new HTTP/1.1
 content-type: application/json;charset=UTF-8
         
 {
@@ -34,7 +34,7 @@ content-type: application/json;charset=UTF-8
 }
 
 ###
-POST http://localhost/wanda/perl/dbconn.pl/members/new HTTP/1.1
+POST http://localhost/wanda/perl/api.pl/members/new HTTP/1.1
 content-type: application/json
 
 {

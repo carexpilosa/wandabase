@@ -10,7 +10,7 @@ export default class ShowSingleMember extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/members/${this.props.match.params.id}`;
+    let url = `${config.apiPath}/api.pl/members/${this.props.match.params.id}`;
     fetch(url, {
       method: 'get',
       'headers': {

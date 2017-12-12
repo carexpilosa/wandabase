@@ -10,7 +10,7 @@ export default class ShowEvents extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/all`;
+    let url = `${config.apiPath}/api.pl/events/all`;
     fetch(url, {
       method: 'get',
       'headers': {

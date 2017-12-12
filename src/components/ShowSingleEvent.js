@@ -13,7 +13,7 @@ export default class ShowSingleEvent extends React.Component {
     };
 
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/events/${this.props.match.params.id}`;
+    let url = `${config.apiPath}/api.pl/events/${this.props.match.params.id}`;
     fetch(url, {
       method: 'get',
       'headers': {
@@ -85,7 +85,7 @@ export default class ShowSingleEvent extends React.Component {
   }
   sendComment(eventID) {
     console.log('verschicke --- Commentaire mit Token ' + getCookie('token'));
-    let url = `${config.dbconnPath}/dbconn.pl/comments/new`,
+    let url = `${config.apiPath}/api.pl/comments/new`,
       data = {
         'member_id': 123,
         'event_id': eventID,

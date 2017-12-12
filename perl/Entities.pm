@@ -3,7 +3,6 @@ package Entities;
 use Data::Dumper;
 use JSON;
 use CGI;
-#use Entities::GetConnect;
 
 
 sub new {

@@ -46,7 +46,7 @@ export default class CreateMember extends React.Component {
       }
     }
     let that = this;
-    let url = `${config.dbconnPath}/dbconn.pl/auth`;
+    let url = `${config.apiPath}/api.pl/auth`;
     fetch(url, {
       method: 'post',
       body: JSON.stringify(data)
