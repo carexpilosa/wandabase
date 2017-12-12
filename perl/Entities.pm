@@ -51,7 +51,7 @@ sub tokenIsValid {
       TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)
         FROM members WHERE token=?
 EOT
-  #warn $statement." => $token";
+  warn $statement;
   my $query = $dbh->prepare($statement);
   $query->execute($token) or die $query->err_str;
 

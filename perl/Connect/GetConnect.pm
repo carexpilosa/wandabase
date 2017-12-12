@@ -8,6 +8,7 @@ use Data::Dumper;
 use POSIX qw(strftime);
 use Encode;
 use Connect;
+use DBWorker;
 
 sub getDbQuery {
   my ($dbh, $type, $id, $page) = @_;
@@ -28,12 +29,8 @@ sub getDbQuery {
       $restData = Connect::errorResponse($page);
     }
     
-    my $query = $dbh->prepare($statement);
-    $query->execute() or die $query->err_str;
-
-    while (my $res = $query->fetchrow_hashref()) {
-      $result{$res->{'id'}} = $res;
-    }
+    my $dbRes = DBWorker::do($dbh, $statement, []);
+    my %result = map { $_->{'id'} => $_ } @{$dbRes};
     $restData = Encode::encode_utf8(to_json(\%result));
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
@@ -42,7 +39,6 @@ sub getDbQuery {
       -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
       -content_type => 'application/json;charset=UTF-8',
       -status => '200 OK') . $restData;
-  #warn Dumper $restData;
   } else {
     $restData = Connect::errorResponse($page);
   }

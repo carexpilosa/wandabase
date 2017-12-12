@@ -13,8 +13,8 @@ CREATE TABLE members (
 
 INSERT INTO members (id, username) VALUES (1, 'horst');
 
-INSERT INTO members (username, password, gender, date_of_membership, is_admin)
-  VALUES ('meyerklein', '123', 'm', '2017-11-21', 0, 'Laufschritt, Laufschritt macht VergnÃ¼gen!');
+INSERT INTO members (username, password, gender, date_of_membership, is_admin, motto)
+             VALUES ('markus', 'markus', 'm',    '2017-11-21',       0,        'Laufschritt, Laufschritt macht Vergnügen!');
 
 create USER 'markus'@'localhost' IDENTIFIED BY 'markus';
 GRANT ALL PRIVILEGES ON wanderbase . * TO 'markus'@'localhost';
