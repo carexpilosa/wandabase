@@ -5,7 +5,8 @@ use base qw(Entities);
 use POSIX qw(strftime);
 use DBConnect::Connect;
 
-my @ISA = qw(Entities);
+my @ISA = qw(Exporter Entities);
+my @EXPORT = qw(addComment);
 
 sub fieldHash {
   return {
@@ -58,7 +59,9 @@ sub getAnswers {}
 sub getPredecessor {}
 
 sub addComment {
-  my ($page, $comment) = @_;
+  my ($self, $page, $comment) = @_;
+  use Encode;
+  $comment = encode_utf8($comment);
   return
     DBConnect::Connect::errorResponse($page,
       "addComment \"$comment\" geht grad nicht...");
