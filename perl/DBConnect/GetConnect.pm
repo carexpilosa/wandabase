@@ -29,7 +29,7 @@ sub getDbQuery {
       $restData = DBConnect::Connect::errorResponse($page);
     }
     
-    my $dbRes = DBWorker::do($dbh, $statement, []);
+    my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
     my %result = map { $_->{'id'} => $_ } @{$dbRes};
     $restData = Encode::encode_utf8(to_json(\%result));
     $restData = $page->header(

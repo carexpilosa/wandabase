@@ -31,9 +31,9 @@ my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 my $restData;
 
 if( $request_method eq 'GET' ) {
-  $restData = GetConnect::getDbQuery($dbh, $type, $id, $page);
+  $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
-  $restData = PostConnect::postDbQuery($dbh, $type, $id, $page);
+  $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'OPTIONS') {
   $restData = $page->header(
     -content_type => 'application/json;charset=UTF-8',

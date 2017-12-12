@@ -12,6 +12,7 @@ use utf8;
 use lib '/home/hugo/wanda/perl';
 
 use DBConnect::Connect;
+use DBConnect::DBWorker;
 use Entities::Events;
 use Entities::Members;
 use Entities::Comments;
@@ -34,11 +35,8 @@ sub postDbQuery {
       SELECT username, password FROM members
         WHERE username=? AND password=?
 EOT
-
-    my $query = $dbh->prepare($statement);
-    $query->execute($username, $password) or die $query->err_str;
-
-    my $res = $query->fetchrow_hashref();
+    my $res = DBConnect::DBWorker::do($dbh,
+      $statement, [$username, $password]);
     my $token;
     if ($res->{'username'} eq $username
         && $res->{'password'} eq $password
@@ -52,8 +50,8 @@ EOT
         SET token=?, token_created=CURRENT_TIMESTAMP
           WHERE username=? AND password=?
 EOT
-    $query = $dbh->prepare($statement);
-    $query->execute($token, $username, $password);
+    $res = DBConnect::DBWorker::do($dbh, $statement,
+      [ $username, $password ]);
 
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
@@ -61,11 +59,8 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
-    warn $ENV{'HTTP_TOKEN'}."######".Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
-
     return DBConnect::Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
       unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
-    warn "######";
     $tableName = $type;
 
     my $entity;
@@ -78,16 +73,13 @@ EOT
     }
 
     $fieldHash = $entity->fieldHash();
-    warn Dumper $fieldHash;
 
     my @fieldNameArray = sort(keys (%{$fieldHash}));
-    #warn Dumper \@fieldNameArray;
     my @bindValues;
     map {
       my $ret = $fieldHash->{$_}->{'returnValue'}->($dataHash->{$_});
       push @bindValues, $ret;
     } @fieldNameArray;
-    #warn Dumper \@bindValues;
     
     my $colnames = join ', ', @fieldNameArray;
     my $placeholder = join(', ', map { '?' } @fieldNameArray);
@@ -96,11 +88,8 @@ EOT
         $colnames
       ) VALUES($placeholder)
 EOT
-    warn $statement;
-    my $sth = $dbh->prepare($statement);
-    my $success = $sth->execute(@bindValues);
-
-    $dataHash->{'success'} = $success;
+    my $res = DBConnect::DBWorker::do($dbh, $statement, \@bindValues);
+    $dataHash->{'success'} = $res;
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
       -access_control_allow_origin => '*',
