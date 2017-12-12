@@ -38,13 +38,13 @@ EOT
     my $res = DBConnect::DBWorker::doGet($dbh,
       $statement, [$username, $password]);
     my $token;
-    
     if ($res->[0]->{'username'} eq $username
         && $res->[0]->{'password'} eq $password
       ) {
       $token = $generator->get;
     }
-
+    warn "SET TOKEN OF ".$res->[0]->{'username'}
+      ."TO => $token";
     $statement
       = <<EOT;
       UPDATE `members`
@@ -52,7 +52,7 @@ EOT
           WHERE username=? AND password=?
 EOT
     $res = DBConnect::DBWorker::do($dbh, $statement,
-      [ $username, $password ]);
+      [ $token, $username, $password ]);
 
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',
@@ -60,6 +60,7 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
+    warn $ENV{'HTTP_TOKEN'};
     return DBConnect::Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
       unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
     $tableName = $type;
