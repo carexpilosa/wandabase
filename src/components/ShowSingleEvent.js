@@ -9,7 +9,8 @@ export default class ShowSingleEvent extends React.Component {
       jsonResponseEvents: {},
       jsonResponseComment: {},
       jsonResponse: {},
-      commentModeActive: false
+      commentModeActive: false,
+      comment: ''
     };
 
     let that = this;
@@ -37,11 +38,12 @@ export default class ShowSingleEvent extends React.Component {
 
   render() {
     let eventID = this.props.match.params.id,
-      eventObj = this.state.jsonResponseEvents[eventID];
+      eventObj = this.state.jsonResponseEvents[eventID],
+      commentRespObj = this.state.jsonResponseComment;
     //let token = getCookie('token');
     //console.log(document.cookie);
 
-    //console.log(eventObj);
+    console.log(this.state.jsonResponseComment);
     
     return <div>
       <div>
@@ -68,8 +70,13 @@ export default class ShowSingleEvent extends React.Component {
           ? 
           <div>
             <h3>Neuer Commentaire</h3>
-            <textarea cols="25" rows="5" name="comment" id="comment"></textarea>
+            <textarea onChange={e => this.updateComment(e)} cols="25" rows="5" name="comment" id="comment"></textarea>
             <button onClick={() => this.sendComment(eventID)}>Absenden</button>
+            {
+              Object.keys(commentRespObj).map((key, idx) => {
+                return `${key} => ${commentRespObj[key]}<br />`;
+              })
+            }
           </div>
           :
           <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
@@ -77,6 +84,14 @@ export default class ShowSingleEvent extends React.Component {
       
     </div>;
   }
+
+  updateComment(e) {
+    console.log(e.target.value);
+    this.setState({
+      comment: e.target.value
+    });
+  }
+
   addComment() {
     console.log('addiere Commentaire');
     this.setState({
@@ -87,9 +102,8 @@ export default class ShowSingleEvent extends React.Component {
     console.log('verschicke --- Commentaire mit Token ' + getCookie('token'));
     let url = `${config.apiPath}/api.pl/comments/new`,
       data = {
-        'member_id': 123,
         'event_id': eventID,
-        'content': 'content'
+        'content': this.state.comment
       },
       that = this;
 

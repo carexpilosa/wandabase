@@ -3,6 +3,7 @@ package Entities::Comments;
 use strict;
 use base qw(Entities);
 use POSIX qw(strftime);
+use DBConnect::Connect;
 
 my @ISA = qw(Entities);
 
@@ -55,5 +56,12 @@ sub fieldHash {
 sub getCommentById {}
 sub getAnswers {}
 sub getPredecessor {}
+
+sub addComment {
+  my ($page, $comment) = @_;
+  return
+    DBConnect::Connect::errorResponse($page,
+      "addComment \"$comment\" geht grad nicht...");
+}
 
 1;
