@@ -59,15 +59,15 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
   } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
-    return Entities::Comments::addComment($page, $dataHash->{content})
-       if $type eq 'comments';
-
     return DBConnect::Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
       unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
     $tableName = $type;
-
+    
     my $entity;
-    if ($type eq 'members') {
+    if ($type eq 'comments') {
+      $entity = Entities::Comments->new();
+      return $entity->addComment($page, $dataHash->{content});
+    } elsif ($type eq 'members') {
       $entity = Entities::Members->new();
     } elsif ($type eq 'events') {
       $entity = Entities::Events->new();

@@ -74,7 +74,7 @@ export default class ShowSingleEvent extends React.Component {
             <button onClick={() => this.sendComment(eventID)}>Absenden</button>
             {
               Object.keys(commentRespObj).map((key, idx) => {
-                return `${key} => ${commentRespObj[key]}<br />`;
+                return <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>;
               })
             }
           </div>
