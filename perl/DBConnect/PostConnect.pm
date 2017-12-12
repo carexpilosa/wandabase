@@ -35,11 +35,12 @@ sub postDbQuery {
       SELECT username, password FROM members
         WHERE username=? AND password=?
 EOT
-    my $res = DBConnect::DBWorker::do($dbh,
+    my $res = DBConnect::DBWorker::doGet($dbh,
       $statement, [$username, $password]);
     my $token;
-    if ($res->{'username'} eq $username
-        && $res->{'password'} eq $password
+    
+    if ($res->[0]->{'username'} eq $username
+        && $res->[0]->{'password'} eq $password
       ) {
       $token = $generator->get;
     }
