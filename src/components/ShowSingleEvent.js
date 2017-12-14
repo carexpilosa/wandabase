@@ -34,6 +34,29 @@ export default class ShowSingleEvent extends React.Component {
       .catch(function(error) {
         return `{error = "${error}"}`;
       });
+
+    //comments for event_id
+    url = `${config.apiPath}/api.pl/comments?event_id=${this.props.match.params.id}`;
+    console.log(url);
+    fetch(url, {
+      method: 'get',
+      'headers': {
+        'Content-Type': 'application/application/json',
+        'Token': getCookie('token'),
+        'mode': 'cors'
+      }
+    }) // Call the fetch function passing the url of the API as a parameter
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        that.setState({
+          jsonResponseEvents: json
+        });
+      })
+      .catch(function(error) {
+        return `{error = "${error}"}`;
+      });
   }
 
   render() {
