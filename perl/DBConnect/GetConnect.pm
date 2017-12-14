@@ -39,6 +39,26 @@ sub getDbQuery {
       -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
       -content_type => 'application/json;charset=UTF-8',
       -status => '200 OK') . $restData;
+  } elsif ($type eq 'comments') {
+    warn "COOOOOOOOOOOOOOOOOOOMMMMMMMMMMMEEEEEEEEENTS";
+    my $eventID = $page->param('event_id');
+    warn $eventID;
+    my $statement = <<EOT;
+      SELECT content, username FROM comments, members
+        WHERE comments.event_id = ?
+          AND comments.member_id = members.id
+EOT
+    my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$eventID]);
+    my %result = map { $_->{'id'} => $_ } @{$dbRes};
+    $restData = Encode::encode_utf8(to_json(\%result));
+    $restData = $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+      -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+      -content_type => 'application/json;charset=UTF-8',
+      -status => '200 OK') . $restData;
+    warn $restData;
   } else {
     $restData = DBConnect::Connect::errorResponse($page);
   }

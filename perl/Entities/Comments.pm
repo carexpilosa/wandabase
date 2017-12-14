@@ -1,12 +1,14 @@
 package Entities::Comments;
 
 use strict;
-use base qw(Entities);
+
 use POSIX qw(strftime);
 use DBConnect::Connect;
+use Data::Dumper;
 
-my @ISA = qw(Exporter Entities);
-my @EXPORT = qw(addComment);
+use base qw(Entities);
+
+my @ISA = qw(Entities);
 
 sub fieldHash {
   return {
@@ -59,12 +61,31 @@ sub getAnswers {}
 sub getPredecessor {}
 
 sub addComment {
-  my ($self, $page, $comment) = @_;
-  use Encode;
-  $comment = encode_utf8($comment);
-  return
-    DBConnect::Connect::errorResponse($page,
-      "addComment \"$comment\" geht grad nicht...");
+  my ($self, $dbh, $page, $dataHash, $token) = @_;
+  my ( $content, $eventID, $token )
+    = ( $dataHash->{'content'}, $dataHash->{'event_id'}, $ENV{HTTP_TOKEN});
+  my $res = {};
+  my $mem = $self->getMemberForValidToken($token);
+
+  if ($mem->{'id'}) {
+    my $statement = <<EOT;
+      INSERT into comments (content, created, member_id, event_id)
+        VALUES (?, ?, ?, ?)
+EOT
+    my $fieldHash = fieldHash();
+    my @bindValues = (
+      $content,
+      $fieldHash->{'created'}->{'returnValue'}(),
+      $mem->{'id'},
+      $eventID
+    );
+    warn Dumper [$statement, @bindValues];
+    $res = DBConnect::DBWorker::do($dbh, $statement, \@bindValues);
+  } else {
+    $res = DBConnect::Connect::errorResponse($page,
+      "addComment geht grad nicht...");
+  }
+  return $res;
 }
 
 1;

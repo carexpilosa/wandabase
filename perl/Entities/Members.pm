@@ -77,7 +77,13 @@ sub fieldHash {
   };
 }
 
-sub getMemberByValidToken {}
+sub getMemberByToken {
+  my ($token) = @_;
+  my $fieldHash = fieldHash();
+  my $statement = 'SELECT '.join ', ', @{sortedFieldNamesForGet()};
+  warn $statement;
+}
+
 sub getMemberById {}
 
 

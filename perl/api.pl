@@ -16,8 +16,6 @@ use Entities;
 
 my $page  = new CGI;
 
-warn "event_id => ".$page->param('event_id');
-
 my $path_info = $ENV{ 'PATH_INFO' };
 my ($type, $id);
 if ($path_info =~ /^\/(.+)?\/(.*)$/) {

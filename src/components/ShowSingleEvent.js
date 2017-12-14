@@ -8,6 +8,7 @@ export default class ShowSingleEvent extends React.Component {
     this.state = {
       jsonResponseEvents: {},
       jsonResponseComment: {},
+      jsonResponseActComments: {},
       jsonResponse: {},
       commentModeActive: false,
       comment: ''
@@ -51,7 +52,7 @@ export default class ShowSingleEvent extends React.Component {
       })
       .then(function(json) {
         that.setState({
-          jsonResponseEvents: json
+          jsonResponseActComments: json
         });
       })
       .catch(function(error) {
@@ -62,9 +63,10 @@ export default class ShowSingleEvent extends React.Component {
   render() {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
-      commentRespObj = this.state.jsonResponseComment;
+      commentRespObj = this.state.jsonResponseComment,
+      jsonResponseActComments = this.state.jsonResponseActComments;
     //let token = getCookie('token');
-    //console.log(document.cookie);
+    console.log(this.state.jsonResponseActComments);
 
     console.log(this.state.jsonResponseComment);
     
@@ -103,6 +105,15 @@ export default class ShowSingleEvent extends React.Component {
           </div>
           :
           <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
+      }
+
+      {
+        Object.keys(jsonResponseActComments).map((key, idx) => {
+          return <div key={idx}>
+            <h3>{jsonResponseActComments[key].username}</h3>
+            {jsonResponseActComments[key].content}
+          </div>;
+        })
       }
       
     </div>;

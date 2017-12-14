@@ -62,7 +62,7 @@ EOT
 }
 
 sub getMemberForValidToken {
-  my $token = shift;
+  my ($self, $token) = @_;
   my $page  = new CGI;
   my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
   my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
@@ -72,6 +72,10 @@ sub getMemberForValidToken {
       FROM members
         WHERE token=?
 EOT
+
+  my $query = $dbh->prepare($statement);
+  $query->execute($token) or die $query->err_str;
+
   my $res = $query->fetchrow_hashref();
   return 0 unless $res;
   my $diff = $res
