@@ -1,9 +1,10 @@
 package DBConnect::DBWorker;
 
+use strict;
+use warnings;
+
 use Data::Dumper;
 use Config;
-
-use strict;
 
 sub connection {
   my $configHash = Config::configurationHash();

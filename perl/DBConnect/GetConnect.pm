@@ -1,6 +1,8 @@
 package DBConnect::GetConnect;
 
 use strict;
+use warnings;
+
 use JSON;
 use CGI;
 use DBI;
@@ -21,7 +23,7 @@ sub getDbQuery {
         : Entities::Events->new();
     my $sortedFieldNamesForGet = $entity->sortedFieldNamesForGet();
     my $colnames = join (', ', @{$sortedFieldNamesForGet});
-    if ($id == 'all') {
+    if ($id eq 'all') {
       $statement = "SELECT $colnames FROM $type";
     } elsif ($id =~ /^\d+$/) { #single entity called with id
       $statement = "SELECT $colnames FROM $type WHERE id=$id";
@@ -40,13 +42,12 @@ sub getDbQuery {
       -content_type => 'application/json;charset=UTF-8',
       -status => '200 OK') . $restData;
   } elsif ($type eq 'comments') {
-    warn "COOOOOOOOOOOOOOOOOOOMMMMMMMMMMMEEEEEEEEENTS";
     my $eventID = $page->param('event_id');
-    warn $eventID;
     my $statement = <<EOT;
-      SELECT content, username FROM comments, members
-        WHERE comments.event_id = ?
-          AND comments.member_id = members.id
+      SELECT comments.id, comments.content, members.username, comments.created
+        FROM comments, members
+          WHERE comments.event_id = ?
+            AND comments.member_id = members.id
 EOT
     my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$eventID]);
     my %result = map { $_->{'id'} => $_ } @{$dbRes};
@@ -58,7 +59,6 @@ EOT
       -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
       -content_type => 'application/json;charset=UTF-8',
       -status => '200 OK') . $restData;
-    warn $restData;
   } else {
     $restData = DBConnect::Connect::errorResponse($page);
   }

@@ -1,6 +1,8 @@
 package Entities::Members;
 
-use  strict;
+use strict;
+use warnings;
+
 use base qw(Entities);
 use POSIX qw(strftime);
 
@@ -81,7 +83,6 @@ sub getMemberByToken {
   my ($token) = @_;
   my $fieldHash = fieldHash();
   my $statement = 'SELECT '.join ', ', @{sortedFieldNamesForGet()};
-  warn $statement;
 }
 
 sub getMemberById {}

@@ -1,6 +1,7 @@
 package Entities::Comments;
 
 use strict;
+use warnings;
 
 use POSIX qw(strftime);
 use DBConnect::Connect;
@@ -61,7 +62,7 @@ sub getAnswers {}
 sub getPredecessor {}
 
 sub addComment {
-  my ($self, $dbh, $page, $dataHash, $token) = @_;
+  my ($self, $dbh, $page, $dataHash) = @_;
   my ( $content, $eventID, $token )
     = ( $dataHash->{'content'}, $dataHash->{'event_id'}, $ENV{HTTP_TOKEN});
   my $res = {};
@@ -79,7 +80,6 @@ EOT
       $mem->{'id'},
       $eventID
     );
-    warn Dumper [$statement, @bindValues];
     $res = DBConnect::DBWorker::do($dbh, $statement, \@bindValues);
   } else {
     $res = DBConnect::Connect::errorResponse($page,

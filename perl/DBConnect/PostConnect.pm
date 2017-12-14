@@ -2,6 +2,7 @@ package DBConnect::PostConnect;
 
 use strict;
 use warnings;
+
 use JSON;
 use CGI;
 use DBI;
@@ -43,8 +44,6 @@ EOT
       ) {
       $token = $generator->get;
     }
-    warn "SET TOKEN OF ".$res->[0]->{'username'}
-      ."TO => $token";
     $statement
       = <<EOT;
       UPDATE `members`
@@ -78,7 +77,7 @@ EOT
     } elsif ($type eq 'events') {
       $entity = Entities::Events->new();
     }
-    
+
     $fieldHash = $entity->fieldHash();
 
     my @fieldNameArray = sort(keys (%{$fieldHash}));

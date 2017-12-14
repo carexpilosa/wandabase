@@ -36,7 +36,6 @@ export default class ShowMembers extends React.Component {
   }
 
   render() {
-    console.log(this.state.jsonResponse);
     return <div>
       <div>Show Users</div>
       {

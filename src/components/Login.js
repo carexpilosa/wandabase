@@ -10,12 +10,6 @@ export default class CreateMember extends React.Component {
   }
 
   render() {
-    let token = this.state.jsonResponse.Token;
-    if(token) {
-      var ablauf = new Date().getTime() + (1 * 60 * 60 * 1000);
-      document.cookie = `token=${token}; expires=${ablauf}`;
-    }
-    console.log(`Cookie = ${document.cookie}`);
     return (
       <div>
         <h3>Login</h3>
@@ -47,19 +41,27 @@ export default class CreateMember extends React.Component {
     }
     let that = this;
     let url = `${config.apiPath}/api.pl/auth`;
-    fetch(url, {
-      method: 'post',
-      body: JSON.stringify(data)
-    }) // Call the fetch function passing the url of the API as a parameter
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({jsonResponse: json});
-      })
-      .catch(function(error) {
-        // This is where you run code if the server returns any errors
-        console.log('ERROR: ' + error);
-      });
+    if (data['username'] && data['password']) {
+      fetch(url, {
+        method: 'post',
+        body: JSON.stringify(data)
+      }) // Call the fetch function passing the url of the API as a parameter
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          that.setState({jsonResponse: json});
+          if(json.Token) {
+            console.log('SET COOKIE TO '+ json.Token);
+            var ablauf = new Date().getTime() + (1 * 60 * 60 * 1000);
+            document.cookie = 'token=; expires=2000-01-01; path=\'/\'';
+            document.cookie = `token=${json.Token}; expires=${ablauf}; path='/'`;
+          }
+        })
+        .catch(function(error) {
+          // This is where you run code if the server returns any errors
+          console.log('ERROR: ' + error);
+        });
+    }
   }
 }

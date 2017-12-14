@@ -1,5 +1,8 @@
 package Entities;
 
+use strict;
+use warnings;
+
 use Data::Dumper;
 use JSON;
 use CGI;
@@ -45,12 +48,11 @@ sub tokenIsValid {
   my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
   my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
 
-  $statement = <<EOT;
+  my $statement = <<EOT;
     SELECT token_created, CURRENT_TIMESTAMP,
       TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)
         FROM members WHERE token=?
 EOT
-  warn $statement;
   my $query = $dbh->prepare($statement);
   $query->execute($token) or die $query->err_str;
 

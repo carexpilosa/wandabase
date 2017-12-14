@@ -38,7 +38,6 @@ export default class ShowSingleEvent extends React.Component {
 
     //comments for event_id
     url = `${config.apiPath}/api.pl/comments?event_id=${this.props.match.params.id}`;
-    console.log(url);
     fetch(url, {
       method: 'get',
       'headers': {
@@ -64,11 +63,7 @@ export default class ShowSingleEvent extends React.Component {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
       commentRespObj = this.state.jsonResponseComment,
-      jsonResponseActComments = this.state.jsonResponseActComments;
-    //let token = getCookie('token');
-    console.log(this.state.jsonResponseActComments);
-
-    console.log(this.state.jsonResponseComment);
+      actComments = this.state.jsonResponseActComments;
     
     return <div>
       <div>
@@ -108,32 +103,34 @@ export default class ShowSingleEvent extends React.Component {
       }
 
       {
-        Object.keys(jsonResponseActComments).map((key, idx) => {
-          return <div key={idx}>
-            <h3>{jsonResponseActComments[key].username}</h3>
-            {jsonResponseActComments[key].content}
-          </div>;
-        })
+        Object.keys(actComments)
+          .sort((a, b) => {
+            return actComments[a].created < actComments[b].created
+              ? 1 : -1;
+          })
+          .map((key, idx) => {
+            return <div key={idx}>
+              <h3>{actComments[key].username}, {actComments[key].created}</h3>
+              {actComments[key].content}
+            </div>;
+          })
       }
       
     </div>;
   }
 
   updateComment(e) {
-    console.log(e.target.value);
     this.setState({
       comment: e.target.value
     });
   }
 
   addComment() {
-    console.log('addiere Commentaire');
     this.setState({
       commentModeActive: true
     });
   }
   sendComment(eventID) {
-    console.log('verschicke --- Commentaire mit Token ' + getCookie('token'));
     let url = `${config.apiPath}/api.pl/comments/new`,
       data = {
         'event_id': eventID,

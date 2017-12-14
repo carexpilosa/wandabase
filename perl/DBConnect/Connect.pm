@@ -1,6 +1,8 @@
 package DBConnect::Connect;
 
 use strict;
+use warnings;
+
 use JSON;
 use Data::Dumper;
 
