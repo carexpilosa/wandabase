@@ -14,8 +14,8 @@ use DBConnect::DBWorker;
 
 sub getDbQuery {
   my ($dbh, $type, $id, $page) = @_;
-  #warn "id ==================> $type, $id";
   my ($restData, $statement);
+  my $eventID = $page->param('event_id');
   my $result;
   if ($type =~ /^(members|events|comments)$/ && $id && $id eq 'all') {
     my $result;
@@ -42,10 +42,21 @@ sub getDbQuery {
     } elsif ($type eq 'events') {
       $result = Entities::Events->getEventForId($id);
     } elsif ($type eq 'comments') {
-      $result = Entities::Comments->getCommentForId($id);
+      $result = Entities::Comments->getCommentForId();
     } else {
       die "wrong entity type $type";
     }
+    $restData = Encode::encode_utf8(to_json($result));
+    $restData = $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+      -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+      -content_type => 'application/json;charset=UTF-8',
+      -status => '200 OK') . $restData;
+  } elsif ($type eq 'comments' && $eventID) {
+    $result = Entities::Comments
+      ->getCommentsOfMembersForEventIdAsHash($eventID);
     $restData = Encode::encode_utf8(to_json($result));
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',

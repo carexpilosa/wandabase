@@ -85,7 +85,9 @@ sub getMemberByToken {
   my $statement = 'SELECT '.join ', ', @{sortedFieldNamesForGet()};
 }
 
-sub getMemberById {}
+sub getMemberByIdAsHash {
+  
+}
 
 sub getAllMembersAsHash {
   my $eventHash = {};

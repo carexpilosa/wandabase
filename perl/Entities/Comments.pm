@@ -89,8 +89,6 @@ EOT
 }
 
 sub getAllCommentsAsHash {
-  my $eventHash = {};
-
   my $dbh = DBConnect::Connect::dbhandler();
 
   my $sortedFieldNamesForGet = Entities::Comments->sortedFieldNamesForGet();
@@ -104,4 +102,19 @@ sub getAllCommentsAsHash {
   return \%result;
 }
 
-1;
+sub getCommentsOfMembersForEventIdAsHash {
+  my ($pkg, $id) = @_;
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $statement = <<EOT;
+  SELECT comments.id, comments.content, members.username, comments.created
+        FROM comments, members
+          WHERE comments.event_id = ?
+            AND comments.member_id = members.id
+EOT
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$id]);
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+  return \%result;
+}
+
+1;  

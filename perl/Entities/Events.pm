@@ -92,8 +92,6 @@ sub getEventForId {
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 
-  warn Dumper \%result;
-
   return \%result;
 }
 

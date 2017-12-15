@@ -36,11 +36,7 @@ if( $request_method eq 'GET' ) {
     my $entity = Entities::Events->new();
     my $testData = {};
   }
-  warn "xxxxxx";
-  warn $type;
-  warn $id;
   my $eventId = $page->param('event_id');  
-  warn $eventId;
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);
