@@ -33,13 +33,14 @@ my $restData;
 
 if( $request_method eq 'GET' ) {
   if ($type eq 'events' && $id =~ /^\d+$/) {
-    warn 'jajajaj';
     my $entity = Entities::Events->new();
-    warn Dumper $entity;
     my $testData = {};
-    warn Dumper $testData;
   }
-  
+  warn "xxxxxx";
+  warn $type;
+  warn $id;
+  my $eventId = $page->param('event_id');  
+  warn $eventId;
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);

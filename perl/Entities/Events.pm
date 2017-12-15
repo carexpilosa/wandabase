@@ -67,8 +67,6 @@ sub getEventById {
 }
 
 sub getAllEventsAsHash {
-  my $eventHash = {};
-
   my $dbh = DBConnect::Connect::dbhandler();
 
   my $sortedFieldNamesForGet = Entities::Events->sortedFieldNamesForGet();
@@ -78,6 +76,23 @@ sub getAllEventsAsHash {
   my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  return \%result;
+}
+
+sub getEventForId {
+  my $id = shift;
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $sortedFieldNamesForGet = Entities::Events->sortedFieldNamesForGet();
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM events WHERE id=?";
+
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$id]);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  warn Dumper \%result;
 
   return \%result;
 }
