@@ -6,6 +6,7 @@ use warnings;
 use Data::Dumper;
 use JSON;
 use CGI;
+use DBConnect::Connect;
 
 
 sub new {
@@ -15,28 +16,28 @@ sub new {
 }
 
 sub sortedFieldNamesForPost {
-  my ($self) = @_;
+  my ($pkg) = @_;
   my @fieldKeys = grep {
-    $self->fieldHash()->{$_}->{'postdata'}
-  } keys(%{$self->fieldHash()});
+    $pkg->fieldHash()->{$_}->{'postdata'}
+  } keys(%{$pkg->fieldHash()});
   my @ret = (
     sort {
-      $self->fieldHash()->{$a}->{'postorder'}
-        <=> $self->fieldHash()->{$b}->{'postorder'}
+      $pkg->fieldHash()->{$a}->{'postorder'}
+        <=> $pkg->fieldHash()->{$b}->{'postorder'}
     } @fieldKeys
   );
   return \@ret;
 }
 
 sub sortedFieldNamesForGet {
-  my ($self) = @_;
+  my ($pkg) = @_;
   my @fieldKeys = grep {
-    $self->fieldHash()->{$_}->{'getdata'}
-  } keys(%{$self->fieldHash()});
+    $pkg->fieldHash()->{$_}->{'getdata'}
+  } keys(%{$pkg->fieldHash()});
   my @ret = (
     sort {
-      $self->fieldHash()->{$a}->{'getorder'}
-        <=> $self->fieldHash()->{$b}->{'getorder'}
+      $pkg->fieldHash()->{$a}->{'getorder'}
+        <=> $pkg->fieldHash()->{$b}->{'getorder'}
     } @fieldKeys
   );
   return \@ret;
@@ -45,8 +46,7 @@ sub sortedFieldNamesForGet {
 sub tokenIsValid {
   my $token = shift;
   my $page  = new CGI;
-  my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
-  my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+  my $dbh = DBConnect::Connect::dbhandler();
 
   my $statement = <<EOT;
     SELECT token_created, CURRENT_TIMESTAMP,
@@ -66,8 +66,7 @@ EOT
 sub getMemberForValidToken {
   my ($self, $token) = @_;
   my $page  = new CGI;
-  my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
-  my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+  my $dbh = DBConnect::Connect::dbhandler();
 
   my $statement = <<EOT;
     SELECT id, username, TIMESTAMPDIFF(SECOND, token_created, CURRENT_TIMESTAMP)

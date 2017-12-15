@@ -14,10 +14,31 @@ use DBConnect::DBWorker;
 
 sub getDbQuery {
   my ($dbh, $type, $id, $page) = @_;
+  warn "id ==================> $type, $id";
   my ($restData, $statement);
   my %result;
-
-  if ($type =~ /^(members|events)$/) {
+  if ($type =~ /^(members|events|comments)$/ && $id eq 'all') {
+    my $result;
+    if ($type eq 'members') {
+      $result = Entities::Members->getAllMembersAsHash();
+    } elsif ($type eq 'events') {
+      $result = Entities::Events->getAllEventsAsHash();
+    } elsif ($type eq 'comments') {
+      $result = Entities::Comments->getAllCommentsAsHash();
+    } else {
+      die "wrong entity type $type";
+    }
+    $restData = Encode::encode_utf8(to_json($result));
+    $restData = $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+      -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+      -content_type => 'application/json;charset=UTF-8',
+      -status => '200 OK') . $restData;
+  } elsif ($type =~ /^(members|events|comments)$/ && $id && $id =~ /^\d+$/) {
+    warn "single dingle ...";
+  } elsif ($type =~ /^(members|events)$/) {
     my $entity = $type eq 'members'
         ? Entities::Members->new()
         : Entities::Events->new();

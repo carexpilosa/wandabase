@@ -88,4 +88,20 @@ EOT
   return $res;
 }
 
+sub getAllCommentsAsHash {
+  my $eventHash = {};
+
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $sortedFieldNamesForGet = Entities::Comments->sortedFieldNamesForGet();
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM comments";
+
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  return \%result;
+}
+
 1;

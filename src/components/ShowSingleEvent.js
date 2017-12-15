@@ -60,6 +60,8 @@ export default class ShowSingleEvent extends React.Component {
   }
 
   render() {
+    console.log('rendere -----');
+    
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
       commentRespObj = this.state.jsonResponseComment,

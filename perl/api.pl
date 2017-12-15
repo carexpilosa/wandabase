@@ -12,7 +12,9 @@ use JSON;
 
 use DBConnect::PostConnect;
 use DBConnect::GetConnect;
+use DBConnect::Connect;
 use Entities;
+use Entities::Events;
 
 my $page  = new CGI;
 
@@ -26,11 +28,18 @@ if ($path_info =~ /^\/(.+)?\/(.*)$/) {
 }
 my $request_method = $ENV{ 'REQUEST_METHOD' };
 
-my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
-my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+my $dbh = DBConnect::Connect::dbhandler();
 my $restData;
 
 if( $request_method eq 'GET' ) {
+  if ($type eq 'events' && $id =~ /^\d+$/) {
+    warn 'jajajaj';
+    my $entity = Entities::Events->new();
+    warn Dumper $entity;
+    my $testData = {};
+    warn Dumper $testData;
+  }
+  
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);

@@ -3,6 +3,8 @@ package Entities::Events;
 use strict;
 use base qw(Entities);
 use POSIX qw(strftime);
+use Data::Dumper;
+use DBConnect::Connect;
 
 my @ISA = qw(Entities);
 
@@ -59,6 +61,25 @@ sub fieldHash {
   };
 }
 
-sub getEventById {}
+sub getEventById {
+  my $event = Entities::Events->new();
+  return $event;
+}
+
+sub getAllEventsAsHash {
+  my $eventHash = {};
+
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $sortedFieldNamesForGet = Entities::Events->sortedFieldNamesForGet();
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM events";
+
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  return \%result;
+}
 
 1;

@@ -87,5 +87,20 @@ sub getMemberByToken {
 
 sub getMemberById {}
 
+sub getAllMembersAsHash {
+  my $eventHash = {};
+
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM members";
+
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  return \%result;
+}
 
 1;

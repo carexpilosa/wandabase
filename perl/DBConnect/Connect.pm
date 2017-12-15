@@ -24,4 +24,8 @@ sub errorResponse {
   return $restData;
 }
 
+sub dbhandler {
+  my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
+  my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+}
 1;
