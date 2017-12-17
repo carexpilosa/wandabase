@@ -1,6 +1,6 @@
 import React from 'react';
-import { getCookie } from '../../lib/connection';
 import { config } from '../../wanderbase.config';
+import { getToken } from '../../actions';
 
 export default class ShowEvents extends React.Component {
   constructor(props) {
@@ -11,11 +11,12 @@ export default class ShowEvents extends React.Component {
 
     let that = this;
     let url = `${config.apiPath}/api.pl/events/all`;
+    console.log('-----get url '+url);
     fetch(url, {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
@@ -23,16 +24,20 @@ export default class ShowEvents extends React.Component {
         return response.json();
       })
       .then(function(json) {
+        console.log(json);
         that.setState({
           jsonResponse: json
         });
       })
       .catch(function(error) {
+        console.log('ERROR => ' + error);
         return `{error = "${error}"}`;
       });
   }
 
   render() {
+    console.log(this.state.jsonResponse);
+    console.log('-----render');
     return <div>
       <div>Show Events</div>
       {

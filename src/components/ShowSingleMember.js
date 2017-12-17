@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCookie } from '../../lib/connection';
+import { getToken } from '../../actions';
 import { config } from '../../wanderbase.config';
 
 export default class ShowSingleMember extends React.Component {
@@ -15,7 +15,7 @@ export default class ShowSingleMember extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter

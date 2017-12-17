@@ -1,6 +1,6 @@
 import React from 'react';
-import { getCookie } from '../../lib/connection';
 import { config } from '../../wanderbase.config';
+import { getToken } from '../../actions';
 
 export default class ShowSingleEvent extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
@@ -42,7 +42,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
@@ -69,7 +69,7 @@ export default class ShowSingleEvent extends React.Component {
     
     return <div>
       <div>
-        <h3>Show Single Event {eventID} {document.cookie}</h3>
+        <h3>Show Single Event {eventID} {getToken()}</h3>
       </div>
       <table>
         <tbody>
@@ -144,7 +144,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       },
       body: JSON.stringify(data)

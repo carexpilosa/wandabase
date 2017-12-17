@@ -17,10 +17,12 @@ sub getDbQuery {
   my ($restData, $statement);
   my $eventID = $page->param('event_id');
   my $result;
+  warn "$type $id";
   if ($type =~ /^(members|events|comments)$/ && $id && $id eq 'all') {
     if ($type eq 'members') {
       $result = Entities::Members->getAllMembersAsHash();
     } elsif ($type eq 'events') {
+      warn "AAAAAAAAAAAAa";
       $result = Entities::Events->getAllEventsAsHash();
     } elsif ($type eq 'comments') {
       $result = Entities::Comments->getAllCommentsAsHash();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCookie } from '../../lib/connection';
+import { getToken } from '../../actions';
 import { config } from '../../wanderbase.config';
 
 export default class CreateMember extends React.Component {
@@ -64,7 +64,7 @@ export default class CreateMember extends React.Component {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getCookie('token'),
+        'Token': getToken(),
         'mode': 'cors'
       },
       body: JSON.stringify(data)

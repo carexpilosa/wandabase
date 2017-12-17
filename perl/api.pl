@@ -19,6 +19,7 @@ use Entities::Events;
 my $page  = new CGI;
 
 my $path_info = $ENV{ 'PATH_INFO' };
+warn $path_info;
 my ($type, $id);
 if ($path_info =~ /^\/(.+)?\/(.*)$/) {
   $type = $1;
@@ -31,7 +32,7 @@ my $request_method = $ENV{ 'REQUEST_METHOD' };
 my $dbh = DBConnect::Connect::dbhandler();
 my $restData = {};
 
-warn $request_method;
+warn "$type $id";
 
 if( $request_method eq 'GET' ) {
   if ($type eq 'events' && $id =~ /^\d+$/) {
@@ -39,6 +40,9 @@ if( $request_method eq 'GET' ) {
     my $testData = {};
   }
   my $eventId = $page->param('event_id');  
+  $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
+} elsif ($type eq 'events' && $id eq 'all') {
+  warn "OOOOOOOOOOO";
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);

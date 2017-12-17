@@ -69,6 +69,8 @@ sub getEventById {
 sub getAllEventsAsHash {
   my $dbh = DBConnect::Connect::dbhandler();
 
+  warn "xxxxxxxxxxxxxx";
+
   my $sortedFieldNamesForGet = Entities::Events->sortedFieldNamesForGet();
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM events";
