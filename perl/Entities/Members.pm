@@ -82,7 +82,14 @@ sub fieldHash {
 sub getMemberByToken {
   my ($token) = @_;
   my $fieldHash = fieldHash();
-  my $statement = 'SELECT '.join ', ', @{sortedFieldNamesForGet()};
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM members WHERE token=?";
+
+  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$token]);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+
+  return \%result;
 }
 
 sub getMemberByIdAsHash {

@@ -55,7 +55,10 @@ export default class CreateMember extends React.Component {
             console.log('SET COOKIE TO '+ json.Token);
             var ablauf = new Date().getTime() + (1 * 60 * 60 * 1000);
             document.cookie = 'token=; expires=2000-01-01; path=\'/\'';
+            console.log("change cookie ...");
+            console.log("from "+document.cookie);
             document.cookie = `token=${json.Token}; expires=${ablauf}; path='/'`;
+            console.log("to "+document.cookie);
           }
         })
         .catch(function(error) {
