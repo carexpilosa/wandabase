@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
 import { getToken } from '../../actions';
+import {store} from '../index';
 
-export default class ShowSingleEvent extends React.Component {
+class ShowSingleEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +22,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.getActToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
@@ -42,7 +44,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.getActToken(),
         'mode': 'cors'
       }
     }) // Call the fetch function passing the url of the API as a parameter
@@ -60,16 +62,16 @@ export default class ShowSingleEvent extends React.Component {
   }
 
   render() {
-    console.log('rendere -----');
-    
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
       commentRespObj = this.state.jsonResponseComment,
       actComments = this.state.jsonResponseActComments;
-    
+    console.log(this.props.getActToken());
     return <div>
       <div>
-        <h3>Show Single Event {eventID} {getToken()}</h3>
+        {
+          //<h3>Show Single Event {eventID} {this.props.getActToken()}</h3>
+        }
       </div>
       <table>
         <tbody>
@@ -95,9 +97,9 @@ export default class ShowSingleEvent extends React.Component {
             <textarea onChange={e => this.updateComment(e)} cols="25" rows="5" name="comment" id="comment"></textarea>
             <button onClick={() => this.sendComment(eventID)}>Absenden</button>
             {
-              Object.keys(commentRespObj).map((key, idx) => {
-                return <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>;
-              })
+              Object.keys(commentRespObj).map((key, idx) =>
+                <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>
+              )
             }
           </div>
           :
@@ -106,16 +108,16 @@ export default class ShowSingleEvent extends React.Component {
 
       {
         Object.keys(actComments)
-          .sort((a, b) => {
-            return actComments[a].created < actComments[b].created
-              ? 1 : -1;
-          })
-          .map((key, idx) => {
-            return <div key={idx}>
+          .sort((a, b) =>
+            actComments[a].created < actComments[b].created
+              ? 1 : -1
+          )
+          .map((key, idx) => 
+            <div key={idx}>
               <h3>{actComments[key].username}, {actComments[key].created}</h3>
               {actComments[key].content}
-            </div>;
-          })
+            </div>
+          )
       }
       
     </div>;
@@ -144,7 +146,7 @@ export default class ShowSingleEvent extends React.Component {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.getActToken(),
         'mode': 'cors'
       },
       body: JSON.stringify(data)
@@ -162,3 +164,21 @@ export default class ShowSingleEvent extends React.Component {
       });
   }
 }
+
+//const getActToken = function() {
+//  store.dispatch(getToken());
+//};
+
+function mapStateToProps(state, props) {
+  return {
+    token: 'token'
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getActToken: () => dispatch(getToken())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowSingleEvent);

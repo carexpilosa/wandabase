@@ -11,25 +11,43 @@ import ShowEvents from './components/ShowEvents';
 import ShowSingleEvent from './components/ShowSingleEvent';
 import ShowSingleMember from './components/ShowSingleMember';
 import Login from './components/Login';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { tokenReducer } from '../reducers';
 
 
 const history = createHistory();
-//let store = createStore(...);
+const initailState = {
+  token: 'helloToken'
+};
+const rootReducer = combineReducers({
+  tokenReducer,
+  initailState
+});
+
+export const store = createStore( rootReducer );
 
 ReactDOM.render(
-  <Router history={history}>
-    <div>
-      <Route path = "/" component={Menu} />
+  <Provider store={store}>
+    <Router history={history}>
       <div>
-        <Route path="/login" component={Login} />
-        <Route path="/newmember" component={CreateMember} />
-        <Route path="/showmembers" component={ShowMembers} />
-        <Route path="/newevent" component={CreateEvent} />
-        <Route path="/showevents" component={ShowEvents} />
-        <Route path="/showsingleevent/:id" component={ShowSingleEvent} />
-        <Route path="/showsinglemember/:id" component={ShowSingleMember} />
+        <Route path = "/" component={Menu} />
+        <div>
+          <Route path="/login" component={Login} />
+          <Route path="/newmember" component={CreateMember} />
+          <Route path="/showmembers" component={ShowMembers} />
+          <Route path="/newevent" component={CreateEvent} />
+          <Route path="/showevents" component={ShowEvents} />
+          <Route path="/showsingleevent/:id" component={ShowSingleEvent} />
+          <Route path="/showsinglemember/:id" component={ShowSingleMember} />
+        </div>
       </div>
-    </div>
-  </Router>,
+    </Router>
+  </Provider>,
   document.getElementById('app')
 );
+
+
+
+
+
