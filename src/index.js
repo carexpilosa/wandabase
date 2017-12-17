@@ -11,21 +11,12 @@ import ShowEvents from './components/ShowEvents';
 import ShowSingleEvent from './components/ShowSingleEvent';
 import ShowSingleMember from './components/ShowSingleMember';
 import Login from './components/Login';
-import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { tokenReducer } from '../reducers';
+import { store } from '../reducers';
+
 
 
 const history = createHistory();
-const initailState = {
-  token: 'helloToken'
-};
-const rootReducer = combineReducers({
-  tokenReducer,
-  initailState
-});
-
-export const store = createStore( rootReducer );
 
 ReactDOM.render(
   <Provider store={store}>
