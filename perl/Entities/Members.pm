@@ -5,6 +5,11 @@ use warnings;
 
 use base qw(Entities);
 use POSIX qw(strftime);
+use CGI;
+use JSON;
+use Encode;
+
+use DBConnect::Connect;
 
 my @ISA = ("Entities");
 
@@ -81,7 +86,10 @@ sub fieldHash {
 
 sub getMemberByToken {
   my ($token) = @_;
-  my $fieldHash = fieldHash();
+
+  my $dbh = DBConnect::Connect::dbhandler();
+  
+  my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM members WHERE token=?";
 
@@ -97,8 +105,6 @@ sub getMemberByIdAsHash {
 }
 
 sub getAllMembersAsHash {
-  my $eventHash = {};
-
   my $dbh = DBConnect::Connect::dbhandler();
 
   my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
@@ -111,5 +117,25 @@ sub getAllMembersAsHash {
 
   return \%result;
 }
+
+sub logout {
+  my $token = shift;
+  my $dbh = DBConnect::Connect::dbhandler();
+  my $statement = <<EOT;
+      UPDATE `members`
+        SET token=NULL, token_created=NULL
+          WHERE token=?
+EOT
+
+  my $dbRes = DBConnect::DBWorker::doPost($dbh, $statement, []);
+
+  my $page = CGI->new();
+  my $restData = $page->header(
+    -content_type => 'application/json;charset=UTF-8',
+    -access_control_allow_origin => '*',
+    -status => '200 OK'
+  ) . encode_utf8(to_json({'Token' => 'leddig'}));
+}
+
 
 1;

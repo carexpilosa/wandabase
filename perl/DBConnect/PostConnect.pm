@@ -27,7 +27,16 @@ sub postDbQuery {
  
   my $dataHash = from_json($data);
   my ($restData, $fieldHash, $tableName);
-  if ($type eq 'auth' && ! $id) {
+  if ($type eq 'logout' && $dataHash->{'token'}) {
+    Entities::Members->logout($dataHash->{'token'});
+    return $page->header(
+      -content_type => 'application/json;charset=UTF-8',
+      -access_control_allow_origin => '*',
+      -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+      -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+      -status => '200 OK'
+    ) . encode_utf8(to_json({'Token' => 'leddig'}));
+  } elsif ($type eq 'auth' && ! $id) {
     my $generator = Session::Token->new;
     my ($username, $password)
       = ($dataHash->{'username'}, $dataHash->{'password'});
@@ -44,8 +53,7 @@ EOT
       ) {
       $token = $generator->get;
     }
-    $statement
-      = <<EOT;
+    $statement = <<EOT;
       UPDATE `members`
         SET token=?, token_created=CURRENT_TIMESTAMP
           WHERE username=? AND password=?
@@ -58,7 +66,7 @@ EOT
       -access_control_allow_origin => '*',
       -status => '200 OK'
     ) . encode_utf8(to_json({'Token' => $token}));
-  } elsif ($id eq 'new' && $type =~ /members|events|comments/) {
+  } elsif ($id && $id eq 'new' && $type =~ /members|events|comments/) {
     return DBConnect::Connect::errorResponse($page, 'Login nicht (mehr?) aktiv')
       unless Entities::tokenIsValid($ENV{'HTTP_TOKEN'});
     $tableName = $type;
@@ -102,7 +110,7 @@ EOT
       -status => '200 OK'
     ) . encode_utf8(to_json($dataHash));
   } else {
-    $restData = DBConnect::errorResponse($page);
+    $restData = DBConnect::Connect::errorResponse($page);
   }
   return $restData;
 }

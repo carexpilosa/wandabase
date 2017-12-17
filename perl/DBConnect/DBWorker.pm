@@ -32,4 +32,13 @@ sub do {
   return $result;
 }
 
+sub doPost {
+  my ($dbh, $statement, $bindValueArray) = @_;
+  warn Dumper [$dbh, $statement, $bindValueArray];
+  my $query = $dbh->prepare($statement);
+  my $result = $query->execute(@{$bindValueArray}) or die $query->err_str;
+  warn Dumper $result;
+  
+}
+
 1;

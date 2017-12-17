@@ -29,7 +29,9 @@ if ($path_info =~ /^\/(.+)?\/(.*)$/) {
 my $request_method = $ENV{ 'REQUEST_METHOD' };
 
 my $dbh = DBConnect::Connect::dbhandler();
-my $restData;
+my $restData = {};
+
+warn $request_method;
 
 if( $request_method eq 'GET' ) {
   if ($type eq 'events' && $id =~ /^\d+$/) {
@@ -40,6 +42,7 @@ if( $request_method eq 'GET' ) {
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);
+  warn "---";
 } elsif ( $request_method eq 'OPTIONS') {
   $restData = $page->header(
     -content_type => 'application/json;charset=UTF-8',
@@ -52,5 +55,6 @@ if( $request_method eq 'GET' ) {
   $restData = to_json({'error' => "Wrong request method $request_method"});
   $restData = $page->header('text/html', '404 Not found') . $restData;
 }
+warn "response => ".Dumper $restData;
 print $restData; # http Response ausgeben
 
