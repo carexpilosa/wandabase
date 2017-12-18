@@ -5,6 +5,7 @@ use warnings;
 
 use base qw(Entities);
 use POSIX qw(strftime);
+use Data::Dumper;
 
 my @ISA = ("Entities");
 
@@ -80,12 +81,13 @@ sub fieldHash {
 }
 
 sub getMemberByToken {
-  my ($token) = @_;
-  my $fieldHash = fieldHash();
+  my ($pkg, $token) = @_;
+  my $dbh = DBConnect::Connect::dbhandler();
+  my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM members WHERE token=?";
 
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$token]);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, [$token]);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 
@@ -93,19 +95,28 @@ sub getMemberByToken {
 }
 
 sub getMemberByIdAsHash {
-  
+  my ($pkg, $id) = @_;
+  my $dbh = DBConnect::Connect::dbhandler();
+
+  my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
+  my $colnames = join (', ', @{$sortedFieldNamesForGet});
+  my $statement = "SELECT $colnames FROM members WHERE id=?";
+
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, [$id]);
+
+  my %result = map { $_->{'id'} => $_ } @{$dbRes};
+  warn Dumper \%result;
+  return \%result;
 }
 
 sub getAllMembersAsHash {
-  my $eventHash = {};
-
   my $dbh = DBConnect::Connect::dbhandler();
 
   my $sortedFieldNamesForGet = Entities::Members->sortedFieldNamesForGet();
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM members";
 
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, []);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 

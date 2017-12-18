@@ -73,7 +73,7 @@ sub getAllEventsAsHash {
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM events";
 
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, []);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 
@@ -88,7 +88,7 @@ sub getEventForId {
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM events WHERE id=?";
 
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$id]);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, [$id]);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 

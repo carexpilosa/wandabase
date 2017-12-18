@@ -29,7 +29,7 @@ sub getDbQuery {
     }
   } elsif ($type =~ /^(members|events|comments)$/ && $id && $id =~ /^\d+$/) {
     if ($type eq 'members') {
-      $result = Entities::Members->getMemberForId($id);
+      $result = Entities::Members->getMemberByIdAsHash($id);
     } elsif ($type eq 'events') {
       $result = Entities::Events->getEventForId($id);
     } elsif ($type eq 'comments') {
