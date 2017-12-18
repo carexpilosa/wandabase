@@ -45,8 +45,7 @@ sub postDbQuery {
       SELECT username, password FROM members
         WHERE username=? AND password=?
 EOT
-    my $res = DBConnect::DBWorker::doGet($dbh,
-      $statement, [$username, $password]);
+    my $res = DBConnect::DBWorker->doGet($dbh, $statement, [$username, $password]);
     my $token;
     if ($res->[0]->{'username'} eq $username
         && $res->[0]->{'password'} eq $password
@@ -58,7 +57,7 @@ EOT
         SET token=?, token_created=CURRENT_TIMESTAMP
           WHERE username=? AND password=?
 EOT
-    $res = DBConnect::DBWorker::do($dbh, $statement,
+    $res = DBConnect::DBWorker->do($dbh, $statement,
       [ $token, $username, $password ]);
 
     $restData = $page->header(
@@ -102,7 +101,7 @@ EOT
         $colnames
       ) VALUES($placeholder)
 EOT
-    my $res = DBConnect::DBWorker::do($dbh, $statement, \@bindValues);
+    my $res = DBConnect::DBWorker->do($dbh, $statement, \@bindValues);
     $dataHash->{'success'} = $res;
     $restData = $page->header(
       -content_type => 'application/json;charset=UTF-8',

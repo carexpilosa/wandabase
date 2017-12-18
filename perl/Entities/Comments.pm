@@ -80,7 +80,7 @@ EOT
       $mem->{'id'},
       $eventID
     );
-    $res = DBConnect::DBWorker::do($dbh, $statement, \@bindValues);
+    $res = DBConnect::DBWorker->do($dbh, $statement, \@bindValues);
   } else {
     $res = DBConnect::Connect::errorResponse($page,
       "addComment geht grad nicht...");
@@ -95,7 +95,7 @@ sub getAllCommentsAsHash {
   my $colnames = join (', ', @{$sortedFieldNamesForGet});
   my $statement = "SELECT $colnames FROM comments";
 
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, []);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, []);
 
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
 
@@ -112,7 +112,7 @@ sub getCommentsOfMembersForEventIdAsHash {
           WHERE comments.event_id = ?
             AND comments.member_id = members.id
 EOT
-  my $dbRes = DBConnect::DBWorker::doGet($dbh, $statement, [$id]);
+  my $dbRes = DBConnect::DBWorker->doGet($dbh, $statement, [$id]);
   my %result = map { $_->{'id'} => $_ } @{$dbRes};
   return \%result;
 }

@@ -11,10 +11,11 @@ sub connection {
 }
 
 sub doGet {
-  my ($dbh, $statement, $bindValueArray) = @_;
+  my ($pkg, $dbh, $statement, $bindValueArray) = @_;
+  warn Dumper [$pkg, $dbh, $statement, $bindValueArray];
   my $query = $dbh->prepare($statement);
-  my @result;
   $query->execute(@{$bindValueArray}) or die $query->err_str;
+  my @result;
   while (my $res = $query->fetchrow_hashref()) {
     push @result, $res;
   }
@@ -22,7 +23,7 @@ sub doGet {
 }
 
 sub do {
-  my ($dbh, $statement, $bindValueArray) = @_;
+  my ($pkg, $dbh, $statement, $bindValueArray) = @_;
   my $query = $dbh->prepare($statement);
   my $result;
   eval {
