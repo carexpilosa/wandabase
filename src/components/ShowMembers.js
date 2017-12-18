@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { getToken } from '../../actions';
 import { config } from '../../wanderbase.config';
@@ -54,9 +55,9 @@ export default class ShowMembers extends React.Component {
                       </tr><tr>
                         <td>username</td>
                         <td>
-                          <a href={`${config.indexPath}/showsinglemember/${key}`}>
+                          <Link to={`/showsinglemember/${key}`}>
                             {this.state.jsonResponse[key].username}
-                          </a>
+                          </Link>
                         </td>
                       </tr><tr>
                         <td>password</td>

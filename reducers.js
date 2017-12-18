@@ -6,22 +6,20 @@ const initialState = {
 
 const rootReducer = combineReducers({
   token: tokenReducer,
-  //initialState
+  //initialState,
 });
 
-export const store = createStore( rootReducer );
+export const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-export function tokenReducer(state = null, action) {
+export function tokenReducer(state='', action) {
   switch (action.type) {
-  case 'GET_TOKEN':
-    console.log('reducer: get token');
-    return '12345';
   case 'DELETE_TOKEN':
-    console.log('reducer: delete token');
-    return 'deleted';
+    return '';
   case 'SET_TOKEN':
-    console.log('reducer: set token to '+state);
-    return state;
+    return action.token;
   default: return state;
   }
 }

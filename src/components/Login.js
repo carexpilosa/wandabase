@@ -1,12 +1,14 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
-import { getToken, deleteToken, setToken } from '../../actions';
+import { deleteToken, setToken } from '../../actions';
+import { store } from '../../reducers';
 
-export default class CreateMember extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jsonResponse: {}
+      jsonResponse: {},
     };
   }
 
@@ -14,14 +16,14 @@ export default class CreateMember extends React.Component {
     return (
       <div>
         <div>
-          <h3>Login</h3>
+          <h3>Login (Token={this.props.token})</h3>
           <label htmlFor="username">Username: </label>
           <input name="username" id="username" type="text" />
           <br />
           <label htmlFor="password">Password: </label>
           <input name="password" id="password" type="password" />
           <br />
-          <button onClick={(e) => { this.login(e); } }>CLICK</button>
+          <button onClick={(e) => { this._login(e); } }>CLICK</button>
           <br />
           { this.state.jsonResponse
               && JSON.stringify(this.state.jsonResponse) !== '{}'
@@ -30,13 +32,13 @@ export default class CreateMember extends React.Component {
         </div>
         <div>
           <h3>Logout</h3>
-          <button onClick={() => { this.logout(); } }>CLICK</button>
+          <button onClick={() => { this._logout(); } }>CLICK</button>
         </div>
       </div>
     );
   }
 
-  login (e) {
+  _login (e) {
     let data = {};
     for(let i=0; i < e.target.parentElement.children.length; i++) {
       let child = e.target.parentElement.children[i];
@@ -52,39 +54,51 @@ export default class CreateMember extends React.Component {
       fetch(url, {
         method: 'post',
         body: JSON.stringify(data)
-      }) // Call the fetch function passing the url of the API as a parameter
+      })
         .then(function(response) {
           return response.json();
         })
         .then(function(json) {
           that.setState({jsonResponse: json});
           if(json.Token) {
-            setToken(json.Token);
+            that.props.setToken(json.Token);
           }
         })
         .catch(function(error) {
-          // This is where you run code if the server returns any errors
           console.log('ERROR: ' + error);
         });
     }
   }
 
-  logout () {
+  _logout () {
     let url = `${config.apiPath}/api.pl/logout`;
     fetch(url, {
       method: 'post',
-      body: JSON.stringify({token: getToken()})
-    }) // Call the fetch function passing the url of the API as a parameter
+      body: JSON.stringify({token: this.props.token})
+    })
       .then(function(response) {
         return response.json();
       })
       .then(function(json) {
-        console.log('reset the coooooookie');
         deleteToken('token');
       })
       .catch(function(error) {
-        // This is where you run code if the server returns any errors
         console.log('ERROR: ' + error);
       });
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    token: state.token
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setToken: (token) => dispatch(setToken(token)),
+    deleteToken: () => dispatch(deleteToken())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

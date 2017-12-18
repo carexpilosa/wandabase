@@ -1,8 +1,9 @@
 import React from 'react';
-import { getToken } from '../../actions';
+import {connect} from 'react-redux';
+import { setToken, deleteToken } from '../../actions';
 import { config } from '../../wanderbase.config';
 
-export default class CreateMember extends React.Component {
+class CreateMember extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,7 +65,7 @@ export default class CreateMember extends React.Component {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.token,
         'mode': 'cors'
       },
       body: JSON.stringify(data)
@@ -81,3 +82,18 @@ export default class CreateMember extends React.Component {
       });
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    token: state.token
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setToken: (token) => dispatch(setToken(token)),
+    deleteToken: () => dispatch(deleteToken())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateMember);

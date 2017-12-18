@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
-import { getToken, deleteToken, setToken } from '../../actions';
+import { deleteToken, setToken } from '../../actions';
 import { store } from '../../reducers';
 
 class ShowSingleEvent extends React.Component {
@@ -15,21 +15,16 @@ class ShowSingleEvent extends React.Component {
       commentModeActive: false,
       comment: ''
     };
-
-    this.props.deleteToken();
-    this.props.getToken();
-    this.props.setToken('123123');
-
     let that = this;
     let url = `${config.apiPath}/api.pl/events/${this.props.match.params.id}`;
     fetch(url, {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.token,
         'mode': 'cors'
       }
-    }) // Call the fetch function passing the url of the API as a parameter
+    })
       .then(function(response) {
         return response.json();
       })
@@ -48,10 +43,10 @@ class ShowSingleEvent extends React.Component {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.token,
         'mode': 'cors'
       }
-    }) // Call the fetch function passing the url of the API as a parameter
+    })
       .then(function(response) {
         return response.json();
       })
@@ -66,15 +61,15 @@ class ShowSingleEvent extends React.Component {
   }
 
   render() {
-    console.log(this.props.token);
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
       commentRespObj = this.state.jsonResponseComment,
-      actComments = this.state.jsonResponseActComments;
+      actComments = this.state.jsonResponseActComments,
+      token = this.props.token;
     return <div>
       <div>
         {
-          //<h3>Show Single Event {eventID} {getToken()}</h3>
+          <h3>Show Single Event {eventID} {token}</h3>
         }
       </div>
       <table>
@@ -108,7 +103,6 @@ class ShowSingleEvent extends React.Component {
           </div>
           :
           <div>
-            <a href="#" onClick={() => this.props.setToken('545555')}>setToken</a>
             <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
           </div>
       }
@@ -153,11 +147,11 @@ class ShowSingleEvent extends React.Component {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
-        'Token': getToken(),
+        'Token': this.props.token,
         'mode': 'cors'
       },
       body: JSON.stringify(data)
-    }) // Call the fetch function passing the url of the API as a parameter
+    })
       .then(function(response) {
         return response.json();
       })
@@ -172,36 +166,17 @@ class ShowSingleEvent extends React.Component {
   }
 }
 
-//const getToken = function() {
-//  store.dispatch(getToken());
-//};
-
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
-    token: props.token
+    token: state.token
   };
 }
-
-//function mapDispatchToProps(dispatch) {
-//  return {
-    //getToken: () => dispatch(getToken())
-//  };
-//}
-
-function getActToken() {
-  return store.getState('token');
-}
-
-//const action = setToken();
-//store.dispatch(action);
 
 function mapDispatchToProps(dispatch) {
   return {
     setToken: (token) => dispatch(setToken(token)),
-    getToken: () => dispatch(getToken()),
     deleteToken: () => dispatch(deleteToken())
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowSingleEvent);
-//export default ShowSingleEvent;

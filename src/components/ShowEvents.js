@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { config } from '../../wanderbase.config';
 import { getToken } from '../../actions';
 
@@ -11,7 +12,6 @@ export default class ShowEvents extends React.Component {
 
     let that = this;
     let url = `${config.apiPath}/api.pl/events/all`;
-    console.log('-----get url '+url);
     fetch(url, {
       method: 'get',
       'headers': {
@@ -24,7 +24,6 @@ export default class ShowEvents extends React.Component {
         return response.json();
       })
       .then(function(json) {
-        console.log(json);
         that.setState({
           jsonResponse: json
         });
@@ -36,8 +35,6 @@ export default class ShowEvents extends React.Component {
   }
 
   render() {
-    console.log(this.state.jsonResponse);
-    console.log('-----render');
     return <div>
       <div>Show Events</div>
       {
@@ -54,9 +51,9 @@ export default class ShowEvents extends React.Component {
                     </tr><tr>
                       <td>title</td>
                       <td>
-                        <a href={`${config.indexPath}/showsingleevent/${key}`}>
+                        <Link to={`/showsingleevent/${key}`}>
                           {this.state.jsonResponse[key].title}
-                        </a>
+                        </Link>
                       </td>
                     </tr><tr>
                       <td>description</td>
