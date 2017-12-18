@@ -26,16 +26,29 @@ sub postDbQuery {
   $data = decode_utf8($data);
  
   my $dataHash = from_json($data);
+  
   my ($restData, $fieldHash, $tableName);
-  if ($type eq 'logout' && $dataHash->{'token'}) {
-    Entities::Members->logout($dataHash->{'token'});
-    return $page->header(
-      -content_type => 'application/json;charset=UTF-8',
-      -access_control_allow_origin => '*',
-      -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
-      -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
-      -status => '200 OK'
-    ) . encode_utf8(to_json({'Token' => 'leddig'}));
+  if ($type eq 'logout') {
+    if (my $token = $dataHash->{'token'}) {
+      warn "*** log out for $token ***";
+      Entities::Members->logout($token);
+      return $page->header(
+        -content_type => 'application/json;charset=UTF-8',
+        -access_control_allow_origin => '*',
+        -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+        -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+        -status => '200 OK'
+      ) . encode_utf8(to_json({'Token' => 'leddig'}));
+    } else {
+      warn "*** not logged in ***";
+      return $page->header(
+        -content_type => 'application/json;charset=UTF-8',
+        -access_control_allow_origin => '*',
+        -access_control_allow_methods => 'GET,HEAD,OPTIONS,POST,PUT',
+        -access_control_allow_headers => 'Mode, Token, Origin, X-Requested-With, Content-Type, Accept',
+        -status => '200 OK'
+      ) . encode_utf8(to_json({'Token' => 'leddig'}));
+    }
   } elsif ($type eq 'auth' && ! $id) {
     my $generator = Session::Token->new;
     my ($username, $password)

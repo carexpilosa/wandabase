@@ -32,8 +32,6 @@ my $request_method = $ENV{ 'REQUEST_METHOD' };
 my $dbh = DBConnect::Connect::dbhandler();
 my $restData = {};
 
-warn "$type $id";
-
 if( $request_method eq 'GET' ) {
   if ($type eq 'events' && $id =~ /^\d+$/) {
     my $entity = Entities::Events->new();
@@ -42,11 +40,10 @@ if( $request_method eq 'GET' ) {
   my $eventId = $page->param('event_id');  
   $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ($type eq 'events' && $id eq 'all') {
-  warn "OOOOOOOOOOO";
-  $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
+    $restData = DBConnect::GetConnect::getDbQuery($dbh, $type, $id, $page);
 } elsif ( $request_method eq 'POST') {
+  warn "pooooost";
   $restData = DBConnect::PostConnect::postDbQuery($dbh, $type, $id, $page);
-  warn "---";
 } elsif ( $request_method eq 'OPTIONS') {
   $restData = $page->header(
     -content_type => 'application/json;charset=UTF-8',

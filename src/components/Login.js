@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
 import { deleteToken, setToken } from '../../actions';
-import { store } from '../../reducers';
 
 class Login extends React.Component {
   constructor(props) {
@@ -71,6 +70,7 @@ class Login extends React.Component {
   }
 
   _logout () {
+    this.props.deleteToken('token');
     let url = `${config.apiPath}/api.pl/logout`;
     fetch(url, {
       method: 'post',
@@ -80,9 +80,11 @@ class Login extends React.Component {
         return response.json();
       })
       .then(function(json) {
-        deleteToken('token');
+        //this.props.deleteToken('token');
+        //this.render();
       })
       .catch(function(error) {
+        //this.render();
         console.log('ERROR: ' + error);
       });
   }

@@ -129,7 +129,8 @@ sub getAllMembersAsHash {
 }
 
 sub logout {
-  my $token = shift;
+  my ($pkg, $token) = @_;
+  warn Dumper [$pkg, $token];
   my $dbh = DBConnect::Connect::dbhandler();
   my $statement = <<EOT;
       UPDATE `members`
@@ -137,7 +138,7 @@ sub logout {
           WHERE token=?
 EOT
 
-  my $dbRes = DBConnect::DBWorker::doPost($dbh, $statement, []);
+  my $dbRes = DBConnect::DBWorker::doPost($dbh, $statement, [$token]);
 
   my $page = CGI->new();
   my $restData = $page->header(

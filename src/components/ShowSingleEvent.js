@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
 import { deleteToken, setToken } from '../../actions';
-import { store } from '../../reducers';
 
 class ShowSingleEvent extends React.Component {
   constructor(props) {
