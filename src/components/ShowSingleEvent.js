@@ -13,7 +13,8 @@ class ShowSingleEvent extends React.Component {
       jsonResponseActComments: {},
       jsonResponse: {},
       commentModeActive: false,
-      comment: ''
+      comment: '',
+      commentPredecessor: undefined
     };
     let url = `${config.apiPath}/api.pl/events/${this.props.match.params.id}`;
     let fetchParams = {
@@ -71,9 +72,15 @@ class ShowSingleEvent extends React.Component {
         this.state.commentModeActive
           ? 
           <div>
-            <h3>Neuer Commentaire</h3>
+            <h3>Neuer Commentaire
+              {
+                this.state.commentPredecessor
+                  ? ` (Antwort auf ${this.state.commentPredecessor})`
+                  : ''
+              }
+            </h3>
             <textarea onChange={e => this.updateComment(e)} cols="25" rows="5" name="comment" id="comment"></textarea>
-            <button onClick={() => this.sendComment(eventID)}>Absenden</button>
+            <button onClick={() => this.sendComment(eventID, this.state.commentPredecessor)}>Absenden</button>
             {
               Object.keys(commentRespObj).map((key, idx) =>
                 <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>
@@ -92,14 +99,63 @@ class ShowSingleEvent extends React.Component {
             actComments[a].created < actComments[b].created
               ? 1 : -1
           )
+          .filter((key) => actComments[key].predecessor_id === null)
           .map((key, idx) => 
             <div key={idx}>
+              <hr/>
+              <h3>({actComments[key].id})</h3>
               <h3>{actComments[key].username}, {actComments[key].created}</h3>
-              {actComments[key].content}
+              <div style={{backgroundColor: 'orange', width: '200px'}}>
+                {actComments[key].content}
+              </div>
+              <a href='#' onClick={() => this.addComment(actComments[key].id)}>
+                antworten auf {actComments[key].id}
+              </a>
+              {
+                this._renderSuccessors(actComments[key].id, 0)
+              }
             </div>
           )
       }
       
+    </div>;
+  }
+
+  _renderSuccessors(id, level) {
+    level++;
+    console.log(level);
+    let leftPx = 20*level+'px';
+    console.log(leftPx);
+    let actComments = this.state.jsonResponseActComments;
+    return <div>
+      <h3>Successors of Comment {id}</h3>
+      {
+        Object.keys(actComments)
+          .sort((a, b) =>
+            actComments[a].created < actComments[b].created
+              ? 1 : -1
+          )
+          .filter((key) => actComments[key].predecessor_id === id)
+          .map((key, idx) => 
+            <div key={idx} style={{
+              backgroundColor: 'yellow',
+              position: 'relative',
+              left: leftPx}}>
+              <hr/>
+              <h3>({actComments[key].id})</h3>
+              <h3>{actComments[key].username}, {actComments[key].created}</h3>
+              <div style={{backgroundColor: 'orange', width: '200px'}}>
+                {actComments[key].content}
+              </div>
+              <a href='#' onClick={() => this.addComment(actComments[key].id)}>
+                antworten auf {actComments[key].id}
+              </a>
+              {
+                this._renderSuccessors(actComments[key].id, level)
+              }
+            </div>
+          )
+      }
     </div>;
   }
 
@@ -109,16 +165,19 @@ class ShowSingleEvent extends React.Component {
     });
   }
 
-  addComment() {
+  addComment(id) {
     this.setState({
-      commentModeActive: true
+      commentModeActive: true,
+      commentPredecessor: id
     });
   }
-  sendComment(eventID) {
+  sendComment(eventID, predecessorId) {
+    console.log('predecessor =====> '+predecessorId);
     let url = `${config.apiPath}/api.pl/comments/new`;
     let data = {
       'event_id': eventID,
-      'content': this.state.comment
+      'content': this.state.comment,
+      'predecessor_id': predecessorId
     };
     let fetchParams = {
       method: 'post',

@@ -54,6 +54,13 @@ sub fieldHash {
       'getorder' => 500,
       'postorder' => 500
     },
+    'predecessor_id' => {
+      'returnValue' => sub { shift },
+      'postdata' => 1,
+      'getdata' => 1,
+      'getorder' => 600,
+      'postorder' => 600
+    },
   };
 }
 
@@ -63,22 +70,24 @@ sub getPredecessor {}
 
 sub addComment {
   my ($self, $dbh, $page, $dataHash) = @_;
-  my ( $content, $eventID, $token )
-    = ( $dataHash->{'content'}, $dataHash->{'event_id'}, $ENV{HTTP_TOKEN});
+  my ( $content, $eventID, $predecessorID, $token )
+    = ( $dataHash->{'content'}, $dataHash->{'event_id'},
+        $dataHash->{'predecessor_id'}, $ENV{HTTP_TOKEN} );
   my $res = {};
   my $mem = $self->getMemberForValidToken($token);
 
   if ($mem->{'id'}) {
     my $statement = <<EOT;
-      INSERT into comments (content, created, member_id, event_id)
-        VALUES (?, ?, ?, ?)
+      INSERT into comments (content, created, member_id, event_id, predecessor_id)
+        VALUES (?, ?, ?, ?, ?)
 EOT
     my $fieldHash = fieldHash();
     my @bindValues = (
       $content,
       $fieldHash->{'created'}->{'returnValue'}(),
       $mem->{'id'},
-      $eventID
+      $eventID,
+      $predecessorID
     );
     $res = DBConnect::DBWorker->do($dbh, $statement, \@bindValues);
   } else {
@@ -107,7 +116,7 @@ sub getCommentsOfMembersForEventIdAsHash {
   my $dbh = DBConnect::Connect::dbhandler();
 
   my $statement = <<EOT;
-  SELECT comments.id, comments.content, members.username, comments.created
+  SELECT comments.id, comments.content, members.username, comments.created, predecessor_id
         FROM comments, members
           WHERE comments.event_id = ?
             AND comments.member_id = members.id
