@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
 import { deleteToken, setToken } from '../../actions';
+import { fetchUrl} from '../Utils';
 
 class ShowSingleEvent extends React.Component {
   constructor(props) {
@@ -14,49 +15,28 @@ class ShowSingleEvent extends React.Component {
       commentModeActive: false,
       comment: ''
     };
-    let that = this;
     let url = `${config.apiPath}/api.pl/events/${this.props.match.params.id}`;
-    fetch(url, {
+    let fetchParams = {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
         'Token': this.props.token,
         'mode': 'cors'
       }
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({
-          jsonResponseEvents: json
-        });
-      })
-      .catch(function(error) {
-        return `{error = "${error}"}`;
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponseEvents', this);
 
     //comments for event_id
     url = `${config.apiPath}/api.pl/comments?event_id=${this.props.match.params.id}`;
-    fetch(url, {
+    fetchParams = {
       method: 'get',
       'headers': {
         'Content-Type': 'application/application/json',
         'Token': this.props.token,
         'mode': 'cors'
       }
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({
-          jsonResponseActComments: json
-        });
-      })
-      .catch(function(error) {
-        return `{error = "${error}"}`;
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponseActComments', this);
   }
 
   render() {
@@ -135,14 +115,12 @@ class ShowSingleEvent extends React.Component {
     });
   }
   sendComment(eventID) {
-    let url = `${config.apiPath}/api.pl/comments/new`,
-      data = {
-        'event_id': eventID,
-        'content': this.state.comment
-      },
-      that = this;
-
-    fetch(url, {
+    let url = `${config.apiPath}/api.pl/comments/new`;
+    let data = {
+      'event_id': eventID,
+      'content': this.state.comment
+    };
+    let fetchParams = {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
@@ -150,18 +128,8 @@ class ShowSingleEvent extends React.Component {
         'mode': 'cors'
       },
       body: JSON.stringify(data)
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({
-          jsonResponseComment: json
-        });
-      })
-      .catch(function(error) {
-        return `{error = "${error}"}`;
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponseComment', this);
   }
 }
 

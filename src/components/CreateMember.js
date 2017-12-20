@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { setToken, deleteToken } from '../../actions';
 import { config } from '../../wanderbase.config';
+import { fetchUrl } from '../Utils';
 
 class CreateMember extends React.Component {
   constructor(props) {
@@ -59,9 +60,9 @@ class CreateMember extends React.Component {
         data['motto'] = child.value;
       }
     }
-    let that = this;
+
     let url = `${config.apiPath}/api.pl/members/new`;
-    fetch(url, {
+    let fetchParams = {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
@@ -69,17 +70,8 @@ class CreateMember extends React.Component {
         'mode': 'cors'
       },
       body: JSON.stringify(data)
-    }) // Call the fetch function passing the url of the API as a parameter
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({jsonResponse: json});
-      })
-      .catch(function(error) {
-        // This is where you run code if the server returns any errors
-        console.log('ERROR: ' + error);
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponse', this);
   }
 }
 

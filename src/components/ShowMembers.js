@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { getToken } from '../../actions';
 import { config } from '../../wanderbase.config';
+import { fetchUrl} from '../Utils';
 
 export default class ShowMembers extends React.Component {
   constructor(props) {
@@ -11,29 +12,16 @@ export default class ShowMembers extends React.Component {
       jsonResponse: {}
     };
 
-    let that = this;
     let url = `${config.apiPath}/api.pl/members/all`;
-    
-    fetch(url, {
+    let fetchParams = {
       'method': 'get',
       'headers': {
         'Content-Type': 'application/application/json',
         'Token': getToken(),
         'mode': 'cors'
       }
-    }) // Call the fetch function passing the url of the API as a parameter
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({
-          jsonResponse: json
-        });
-      })
-      .catch(function(error) {
-        // This is where you run code if the server returns any errors
-        console.log('ERROR: ' + error);
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponse', this);
   }
 
   render() {

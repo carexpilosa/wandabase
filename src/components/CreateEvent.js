@@ -1,6 +1,7 @@
 import React from 'react';
 import { getToken } from '../../actions';
 import { config } from '../../wanderbase.config';
+import { fetchUrl } from '../Utils';
 
 export default class CreateMember extends React.Component {
   constructor(props) {
@@ -51,9 +52,8 @@ export default class CreateMember extends React.Component {
         data['startlocation'] = child.value;
       }
     }
-    let that = this;
     let url = `${config.apiPath}/api.pl/events/new`;
-    fetch(url, {
+    let fetchParams = {
       method: 'post',
       'headers': {
         'Content-Type': 'application/application/json',
@@ -61,16 +61,7 @@ export default class CreateMember extends React.Component {
         'mode': 'cors'
       },
       body: JSON.stringify(data)
-    }) // Call the fetch function passing the url of the API as a parameter
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        that.setState({jsonResponse: json});
-      })
-      .catch(function(error) {
-        // This is where you run code if the server returns any errors
-        console.log('ERROR: ' + error);
-      });
+    };
+    fetchUrl(url, fetchParams, 'jsonResponse', this);
   }
 }
