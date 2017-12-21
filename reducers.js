@@ -17,8 +17,10 @@ export const store = createStore(
 export function tokenReducer(state='', action) {
   switch (action.type) {
   case 'DELETE_TOKEN':
+    sessionStorage.setItem('wandaToken', '');
     return '';
   case 'SET_TOKEN':
+    sessionStorage.setItem('wandaToken', action.token);
     return action.token;
   default: return state;
   }

@@ -1,0 +1,4 @@
+TODO:
+
+Token in sessionStorage statt redux-Storage speichern
+Dann alle POST-Operationen überprüfen

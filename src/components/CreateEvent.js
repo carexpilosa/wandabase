@@ -12,6 +12,7 @@ export default class CreateMember extends React.Component {
   }
 
   render() {
+    console.log(getToken());
     return (
       <div>
         <h3>Neues Event</h3>

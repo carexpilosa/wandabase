@@ -124,8 +124,7 @@ class ShowSingleEvent extends React.Component {
   _renderSuccessors(id, level) {
     level++;
     console.log(level);
-    let leftPx = 20*level+'px';
-    console.log(leftPx);
+    let leftPx = '20px';
     let actComments = this.state.jsonResponseActComments;
     return <div>
       <h3>Successors of Comment {id}</h3>
@@ -138,9 +137,10 @@ class ShowSingleEvent extends React.Component {
           .filter((key) => actComments[key].predecessor_id === id)
           .map((key, idx) => 
             <div key={idx} style={{
-              backgroundColor: 'yellow',
+              backgroundColor: '#' + (10-level) + (10-level) + (10-level),
               position: 'relative',
-              left: leftPx}}>
+              left: leftPx,
+              width: '300px'}}>
               <hr/>
               <h3>({actComments[key].id})</h3>
               <h3>{actComments[key].username}, {actComments[key].created}</h3>
