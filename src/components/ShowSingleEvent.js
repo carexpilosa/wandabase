@@ -69,7 +69,7 @@ class ShowSingleEvent extends React.Component {
         </tbody>
       </table>
       {
-        this._renderCommentBox()
+        //this._renderCommentBox()
       }
 
       {
@@ -87,9 +87,12 @@ class ShowSingleEvent extends React.Component {
               <div style={{backgroundColor: 'orange', width: '200px'}}>
                 {actComments[key].content}
               </div>
-              <a href='#' onClick={() => this.addComment(actComments[key].id)}>
+              <a href={`#${actComments[key].id}`} onClick={() => this.addComment(actComments[key].id)}>
                 antworten auf {actComments[key].id}
               </a>
+              {
+                this._renderCommentBox(actComments[key].id)
+              }
               {
                 this._renderSuccessors(actComments[key].id, 0)
               }
@@ -102,18 +105,22 @@ class ShowSingleEvent extends React.Component {
 
   _renderSuccessors(id, level) {
     level++;
-    console.log(level);
     let leftPx = '20px';
     let actComments = this.state.jsonResponseActComments;
+    let filteredComments = Object.keys(actComments)
+      .filter((key) => actComments[key].predecessor_id === id)
+      .sort((a, b) =>
+        actComments[a].created < actComments[b].created
+          ? 1 : -1
+      );
     return <div>
-      <h3>Successors of Comment {id}</h3>
       {
-        Object.keys(actComments)
-          .sort((a, b) =>
-            actComments[a].created < actComments[b].created
-              ? 1 : -1
-          )
-          .filter((key) => actComments[key].predecessor_id === id)
+        filteredComments.length
+          ? <h3>Successors of Comment {id}</h3>
+          : null
+      }
+      {
+        filteredComments
           .map((key, idx) => 
             <div key={idx} style={{
               backgroundColor: '#' + (10-level) + (10-level) + (10-level),
@@ -122,13 +129,16 @@ class ShowSingleEvent extends React.Component {
               width: '300px'}}>
               <hr/>
               <h3>({actComments[key].id})</h3>
-              <h3>{actComments[key].username}, {actComments[key].created}</h3>
+              <h3>{actComments[key].username}, {actComments[key].created} (L {level})</h3>
               <div style={{backgroundColor: 'orange', width: '200px'}}>
                 {actComments[key].content}
               </div>
-              <a href='#' onClick={() => this.addComment(actComments[key].id)}>
+              <a href={`#${actComments[key].id}`} onClick={() => this.addComment(actComments[key].id)}>
                 antworten auf {actComments[key].id}
               </a>
+              {
+                this._renderCommentBox(actComments[key].id)
+              }
               {
                 this._renderSuccessors(actComments[key].id, level)
               }
@@ -145,13 +155,13 @@ class ShowSingleEvent extends React.Component {
   }
 
   addComment(id) {
+    console.log('#######');
     this.setState({
       commentModeActive: true,
       commentPredecessor: id
     });
   }
   sendComment(eventID, predecessorId) {
-    //console.log('predecessor =====> '+predecessorId);
     let url = `${config.apiPath}/api.pl/comments/new`;
     let data = {
       'event_id': eventID,
@@ -168,12 +178,18 @@ class ShowSingleEvent extends React.Component {
       body: JSON.stringify(data)
     };
     fetchUrl(url, fetchParams, 'jsonResponseComment', this);
+    //only if successful =>
+    this.setState({
+      commentModeActive: false
+    });
   }
 
-  _renderCommentBox() {
+  _renderCommentBox(actID) {
     let eventID = this.props.match.params.id,
       commentRespObj = this.state.jsonResponseComment;
-    return this.state.commentModeActive
+
+    return ! this.state.commentPredecessor
+      || (this.state.commentModeActive && actID === this.state.commentPredecessor)
       ? 
       <div>
         <h3>Neuer Commentaire
