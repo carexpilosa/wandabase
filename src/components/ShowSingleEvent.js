@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { config } from '../../wanderbase.config';
 import { deleteToken, setToken } from '../../actions';
 import { fetchUrl} from '../Utils';
+import { Link } from 'react-router-dom';
 
 class ShowSingleEvent extends React.Component {
   constructor(props) {
@@ -43,13 +44,12 @@ class ShowSingleEvent extends React.Component {
   render() {
     let eventID = this.props.match.params.id,
       eventObj = this.state.jsonResponseEvents[eventID],
-      commentRespObj = this.state.jsonResponseComment,
       actComments = this.state.jsonResponseActComments,
       token = this.props.token;
     return <div>
       <div>
         {
-          <h3>Show Single Event {eventID} {token}</h3>
+          <h3>Show Single <Link to={`/showsingleevent/${eventID}`}>Event {eventID}</Link> {token}</h3>
         }
       </div>
       <table>
@@ -69,28 +69,7 @@ class ShowSingleEvent extends React.Component {
         </tbody>
       </table>
       {
-        this.state.commentModeActive
-          ? 
-          <div>
-            <h3>Neuer Commentaire
-              {
-                this.state.commentPredecessor
-                  ? ` (Antwort auf ${this.state.commentPredecessor})`
-                  : ''
-              }
-            </h3>
-            <textarea onChange={e => this.updateComment(e)} cols="25" rows="5" name="comment" id="comment"></textarea>
-            <button onClick={() => this.sendComment(eventID, this.state.commentPredecessor)}>Absenden</button>
-            {
-              Object.keys(commentRespObj).map((key, idx) =>
-                <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>
-              )
-            }
-          </div>
-          :
-          <div>
-            <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
-          </div>
+        this._renderCommentBox()
       }
 
       {
@@ -172,7 +151,7 @@ class ShowSingleEvent extends React.Component {
     });
   }
   sendComment(eventID, predecessorId) {
-    console.log('predecessor =====> '+predecessorId);
+    //console.log('predecessor =====> '+predecessorId);
     let url = `${config.apiPath}/api.pl/comments/new`;
     let data = {
       'event_id': eventID,
@@ -189,6 +168,33 @@ class ShowSingleEvent extends React.Component {
       body: JSON.stringify(data)
     };
     fetchUrl(url, fetchParams, 'jsonResponseComment', this);
+  }
+
+  _renderCommentBox() {
+    let eventID = this.props.match.params.id,
+      commentRespObj = this.state.jsonResponseComment;
+    return this.state.commentModeActive
+      ? 
+      <div>
+        <h3>Neuer Commentaire
+          {
+            this.state.commentPredecessor
+              ? ` (Antwort auf ${this.state.commentPredecessor})`
+              : ''
+          }
+        </h3>
+        <textarea onChange={e => this.updateComment(e)} cols="25" rows="5" name="comment" id="comment"></textarea>
+        <button onClick={() => this.sendComment(eventID, this.state.commentPredecessor)}>Absenden</button>
+        {
+          Object.keys(commentRespObj).map((key, idx) =>
+            <div  key={idx}>{`${key} => ${commentRespObj[key]}`}</div>
+          )
+        }
+      </div>
+      :
+      <div>
+        <a href="#" onClick={() => this.addComment()}>neuer Kommentar</a>
+      </div>;
   }
 }
 

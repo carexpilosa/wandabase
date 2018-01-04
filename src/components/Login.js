@@ -80,6 +80,7 @@ class Login extends React.Component {
         return response.json();
       })
       .then(function(json) {
+        console.log(json);
         //this.props.deleteToken('token');
         //this.render();
       })
