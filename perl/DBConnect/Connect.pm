@@ -27,5 +27,11 @@ sub errorResponse {
 sub dbhandler {
   my $dsn = "DBI:mysql:database=wanderbase;host=localhost";
   my $dbh = DBI->connect($dsn, 'markus', 'markus', {'mysql_enable_utf8' => 1});
+
+  #für naturexlursionen.net:
+  #mysql -h naturexkursionen.net -u d028f176 -p
+  #use d028f176
+  #my $dsn = "DBI:mysql:database=wanderbase;host=naturexkursionen.net";
+  #my $dbh = DBI->connect($dsn, '', '******', {'mysql_enable_utf8' => 1});
 }
 1;

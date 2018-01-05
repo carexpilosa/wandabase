@@ -6,3 +6,4 @@ sub configurationHash {
   username => 'markus',
   password => 'markus'
 }
+
