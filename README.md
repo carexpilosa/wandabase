@@ -1,2 +1,5 @@
 # wandabase
-javascript, react
+-javascript
+- react
+- perl
+- mysql
