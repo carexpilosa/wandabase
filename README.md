@@ -1,5 +1,5 @@
 # wandabase
--javascript
+- javascript
 - react
 - perl
 - mysql
