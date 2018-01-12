@@ -16,8 +16,6 @@ import { store } from '../reducers';
 
 //import styles from './styles/styles.css';
 
-
-
 const history = createHistory();
 
 ReactDOM.render(
