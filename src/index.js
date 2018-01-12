@@ -13,9 +13,8 @@ import ShowSingleMember from './components/ShowSingleMember';
 import Login from './components/Login';
 import { Provider } from 'react-redux';
 import { store } from '../reducers';
-//import {} from 'css-loader';
-//import {} from 'style-loader';
-//import './styles/styles.css';
+
+//import styles from './styles/styles.css';
 
 
 

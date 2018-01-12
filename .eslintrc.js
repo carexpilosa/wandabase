@@ -1,9 +1,23 @@
+const path = require('path');
+
 module.exports = {
+  "settings": {
+    "import/resolver": { 
+      "node" : {
+        "paths": [path.resolve(__dirname)]
+      }
+    }
+  },
   "env": {
     "browser": true,
     "es6": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors", 
+    "plugin:import/warnings"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
@@ -12,7 +26,8 @@ module.exports = {
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "import"
   ],
   "rules": {
     "indent": [

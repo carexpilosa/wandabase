@@ -24,7 +24,21 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   module: {
     loaders: [
-      { test: /\.css$/, loaders: ['style-loader', 'css-loader'] },
+      {
+        test: /\.css$/,
+        use: [{
+          loader: "style-loader",
+          options: {
+            sourceMap: true
+          }
+        },
+        {
+          loader: "css-loader",
+          options: {
+            sourceMap: true
+          }
+        }]
+      },
       {
         include: path.join(__dirname, 'src'),
         loaders: ['babel-loader', 'eslint-loader']
