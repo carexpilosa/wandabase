@@ -25,7 +25,7 @@ export default class ShowEvents extends React.Component {
 
   render() {
     return <div>
-      <div>Show Events</div>
+      <div className="divStyle">Show Events</div>
       {
         this.state.jsonResponse.hasOwnProperty('error')
           ? <span>ERROR =&gt; {this.state.jsonResponse.error}</span>

@@ -25,24 +25,26 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.css$/,
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loaders: ['babel-loader', 'eslint-loader'],
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.(css)$/,
         use: [{
           loader: "style-loader",
           options: {
             sourceMap: true
           }
-        },
-        {
+        }, {
           loader: "css-loader",
           options: {
             sourceMap: true
           }
         }]
       },
-      {
-        include: path.join(__dirname, 'src'),
-        loaders: ['babel-loader', 'eslint-loader']
-      }
+      {test: /\.json/, loader: 'json-loader'}
     ]
   }
 };

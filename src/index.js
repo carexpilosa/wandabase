@@ -13,8 +13,7 @@ import ShowSingleMember from './components/ShowSingleMember';
 import Login from './components/Login';
 import { Provider } from 'react-redux';
 import { store } from '../reducers';
-
-//import styles from './styles/styles.css';
+import './styles/styles.css';
 
 const history = createHistory();
 
