@@ -1,3 +1,10 @@
+
+
+CREATE database wanderbase;
+
+create USER 'markus'@'localhost' IDENTIFIED BY 'markus';
+GRANT ALL PRIVILEGES ON wanderbase . * TO 'markus'@'localhost';
+
 CREATE TABLE members (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id),
@@ -11,13 +18,8 @@ CREATE TABLE members (
   token_created DATETIME
 );
 
-INSERT INTO members (id, username) VALUES (1, 'horst');
-
 INSERT INTO members (username, password, gender, date_of_membership, is_admin, motto)
-             VALUES ('markus', 'markus', 'm',    '2017-11-21',       0,        'Laufschritt, Laufschritt macht Vergnügen!');
-
-create USER 'markus'@'localhost' IDENTIFIED BY 'markus';
-GRANT ALL PRIVILEGES ON wanderbase . * TO 'markus'@'localhost';
+             VALUES ('markus', 'markus', 'm',    '2017-11-21',       0,        'Laufschritt, Laufschritt macht VergnÃ¼gen!');
 
 CREATE TABLE events (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -35,9 +37,11 @@ CREATE TABLE comments (
   content TEXT NOT NULL,
   created DATETIME NOT NULL,
   member_id INT UNSIGNED NOT NULL,
-  event_id INT UNSIGNED NOT NULL
+  event_id INT UNSIGNED NOT NULL,
   predecessor_id INT UNSIGNED
 );
 
+*************************
+INSERT INTO members (id, username) VALUES (1, 'horst');
 ALTER TABLE members ADD token_created DATETIME NOT NULL;
 ALTER TABLE comments ADD predecessor_id INT UNSIGNED;

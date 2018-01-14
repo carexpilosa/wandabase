@@ -1,0 +1,24 @@
+
+sudo a2enmod cgi
+
+
+<Directory /var/www/html/wanda/perl/>
+  Options ExecCGI
+  AddHandler cgi-script cgi pl
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+
+/var/www/html$ sudo mkdir -p wanda/perl
+/var/www/html$ sudo ln -sf /home/hugo/wanda/perl ./wanda/perl
+
+
+sudo service apache2 restart
+
+
+
+
+
+sudo apt-get install libclass-dbi-perl libdbd-mysql-perl
